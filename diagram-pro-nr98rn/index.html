@@ -110,7 +110,6 @@
     position: relative;
   }
 
-  /* ヘルプボタン＆ポップオーバー */
   .help-wrap {
     position: relative;
     display: flex;
@@ -258,7 +257,6 @@
     align-items: center;
   }
 
-  /* 01: モード縦並び */
   .mode-list-vertical {
     display: flex;
     flex-direction: column;
@@ -333,7 +331,6 @@
     border-color: var(--accent-cyan);
   }
 
-  /* 基本テキスト設定サブグループ */
   .sub-group-box {
     background: rgba(11, 17, 30, 0.7);
     border: 1px solid var(--border-color);
@@ -521,7 +518,6 @@
     margin-top: 6px;
   }
 
-  /* 中心テキスト専用ボックス */
   .center-node-box {
     background: rgba(11, 17, 30, 0.8);
     border: 1px solid var(--border-color);
@@ -638,7 +634,6 @@
     border-color: var(--accent-cyan);
   }
 
-  /* 05: 設定ファイル操作 */
   .storage-action-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -730,7 +725,6 @@
     <span class="brand-sub">Arc Utility Labs</span>
   </div>
   <div class="export-group">
-    <!-- ヘルプボタン＆ポップオーバー -->
     <div class="help-wrap">
       <button class="btn-help" id="btn-help" onclick="toggleHelp(event)" title="出力形式の選び方ガイド">?</button>
       <div class="help-popover" id="help-popover">
@@ -758,7 +752,6 @@
       </div>
     </div>
 
-    <!-- 出力ボタン（左からクリップボード、SVG、PNG） -->
     <button class="btn btn-primary" id="btn-copy" onclick="copyPNGToClipboard()">クリップボードにコピー</button>
     <button class="btn" onclick="downloadSVG()">SVGを保存</button>
     <button class="btn" onclick="downloadPNG()">透過PNGを保存</button>
@@ -911,7 +904,7 @@
 
       <div class="mode-toggle-bar">
         <div class="toggle-option active" id="toggle-equal" onclick="setWeightMode(false)">均等配置</div>
-        <div class="toggle-option" id="toggle-weight" onclick="setWeightMode(true)">数値反映（Pro）</div>
+        <div class="toggle-option" id="toggle-weight" onclick="setWeightMode(true)">数値反映</div>
       </div>
 
       <div class="labels-header-sub">
@@ -1030,7 +1023,6 @@
     setMode(state.mode, activeModeBtn);
   }
 
-  /* ヘルプポップオーバーの開閉制御 */
   function toggleHelp(e) {
     e.stopPropagation();
     const pop = document.getElementById('help-popover');
@@ -1045,7 +1037,6 @@
     }
   });
 
-  /* 05: 設定ファイルの保存（JSONダウンロード） */
   function exportSettingsFile() {
     const btn = document.getElementById('btn-export-settings');
     try {
@@ -1083,12 +1074,10 @@
     }
   }
 
-  /* 05: 設定ファイルの読み込みトリガー */
   function triggerImportSettingsFile() {
     document.getElementById('input-import-file').click();
   }
 
-  /* 05: 設定ファイルのインポート処理 */
   function importSettingsFile(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -1141,7 +1130,6 @@
     reader.readAsText(file);
   }
 
-  /* 05: 設定の初期化 */
   function clearSettings() {
     const btn = document.getElementById('btn-clear-settings');
     palettes = [...defaultPalettes];
@@ -1703,23 +1691,10 @@
     ].join(' ');
   }
 
-  function createChevronSegmentPath(cx, cy, rOut, rIn, startAngle, endAngle, gapPx, arrowVal) {
-    const step = endAngle - startAngle;
-    const rMid = (rOut + rIn) / 2;
-    const ringWidth = rOut - rIn;
-
-    const arrowDist = Math.min(arrowVal * 1.5, ringWidth * 0.45);
-    const arrowDeg = Math.min(step * 0.28, (arrowDist / rMid) * (180 / Math.PI));
-
-    const arcLenIn = Math.max(1, rIn) * (step * Math.PI / 180);
-    const maxSafeGap = Math.max(0, arcLenIn * 0.8 - 4);
-    const safeGap = Math.min(Math.max(0, gapPx), maxSafeGap);
-
-    const d = safeGap / 2;
-
-    const offsetOut = (d / rOut) * (180 / Math.PI);
-    const offsetMid = (d / rMid) * (180 / Math.PI);
-    const offsetIn = (d / Math.max(1, rIn)) * (180 / Math.PI);
+  function createChevronSegmentPath(cx, cy, rOut, rIn, startAngle, endAngle, safeD, arrowDeg) {
+    const offsetOut = (safeD / rOut) * (180 / Math.PI);
+    const offsetMid = (safeD / ((rOut + rIn) / 2)) * (180 / Math.PI);
+    const offsetIn = (safeD / Math.max(1, rIn)) * (180 / Math.PI);
 
     const aOutStart = startAngle + offsetOut;
     const aMidIndent = startAngle + arrowDeg + offsetMid;
@@ -1731,6 +1706,7 @@
 
     if (aOutEnd <= aOutStart || aInEnd <= aInStart) return '';
 
+    const rMid = (rOut + rIn) / 2;
     const pOutStart = polarToCartesian(cx, cy, rOut, aOutStart);
     const pOutEnd = polarToCartesian(cx, cy, rOut, aOutEnd);
     const pTip = polarToCartesian(cx, cy, rMid, aMidTip);
@@ -1804,6 +1780,7 @@
       const effectiveRIn = arrow > 0 ? Math.max(40, rIn) : rIn;
 
       let angles = [];
+      let minSpan = 360;
       if (state.useWeights) {
         let totalVal = 0;
         for (let i = 0; i < n; i++) {
@@ -1813,10 +1790,12 @@
         for (let i = 0; i < n; i++) {
           const segSpan = ((state.values[i] || 50) / totalVal) * 360;
           angles.push({ start: currentAngle, end: currentAngle + segSpan, span: segSpan });
+          if (segSpan < minSpan) minSpan = segSpan;
           currentAngle += segSpan;
         }
       } else {
         const step = 360 / n;
+        minSpan = step;
         for (let i = 0; i < n; i++) {
           angles.push({ start: i * step + rot, end: (i + 1) * step + rot, span: step });
         }
@@ -1824,7 +1803,16 @@
 
       const ringWidth = rOut - effectiveRIn;
       const rMid = (rOut + effectiveRIn) / 2;
+
+      // 最小セグメント幅に基づき、全セグメント共通の安全な突出角度を決定
       const arrowDist = Math.min(arrow * 1.5, ringWidth * 0.45);
+      const maxSafeArrowDeg = Math.max(0, minSpan * 0.35);
+      const targetArrowDeg = (arrowDist / rMid) * (180 / Math.PI);
+      const commonArrowDeg = (arrow > 0) ? Math.min(targetArrowDeg, maxSafeArrowDeg) : 0;
+
+      // 最小セグメントが消滅しない安全な間隔幅（safeD）を全体共通で適用
+      const maxSafeD = Math.max(0, (effectiveRIn * (minSpan * Math.PI / 180) * 0.4));
+      const safeD = Math.min(gap / 2, maxSafeD);
 
       for (let i = 0; i < n; i++) {
         const seg = angles[i];
@@ -1836,13 +1824,12 @@
         if (arrow === 0) {
           d = createDonutSegmentPath(cx, cy, rOut, effectiveRIn, seg.start, seg.end, gap);
         } else {
-          d = createChevronSegmentPath(cx, cy, rOut, effectiveRIn, seg.start, seg.end, gap, arrow);
+          d = createChevronSegmentPath(cx, cy, rOut, effectiveRIn, seg.start, seg.end, safeD, commonArrowDeg);
         }
 
         html += `<path d="${d}" fill="${color}" />`;
 
-        const arrowDeg = (arrow > 0) ? Math.min(seg.span * 0.28, (arrowDist / rMid) * (180 / Math.PI)) : 0;
-        const arrowOffset = arrowDeg / 2;
+        const arrowOffset = commonArrowDeg / 2;
         const midAngle = (seg.start + seg.end) / 2 + arrowOffset;
         const labelPos = polarToCartesian(cx, cy, labelRadius, midAngle);
         html += renderMultilineText(labelPos.x, labelPos.y, state.labels[i], fontSize, state.textColor);
