@@ -954,7 +954,7 @@
 
 <script>
   const defaultPalettes = [
-    { name: 'Arc Cyan (Standard)', colors: ['#0284c7', '#00b4d8', '#0077b6', '#48cae4', '#03045e', '#90e0ef'] },
+    { name: 'Arc Cyan (Standard)', colors: ['#0284c7', '#00b4d8', '#0077b6', '#48cae4', '#1a6cd4', '#90e0ef'] },
     { name: 'Executive Navy', colors: ['#1e3a8a', '#2563eb', '#3b82f6', '#60a5fa', '#1d4ed8', '#93c5fd'] },
     { name: 'Teal & Emerald', colors: ['#0f766e', '#14b8a6', '#0d9488', '#2dd4bf', '#115e59', '#5eead4'] },
     { name: 'Warm Coral', colors: ['#be123c', '#e11d48', '#f43f5e', '#fb7185', '#9f1239', '#fda4af'] },
@@ -993,6 +993,8 @@
     satelliteLineWidth: 2,
     polygonLabelOffset: 32
   };
+
+  const STORAGE_KEY = 'arc_pro_diagram_state_v5';
 
   function init() {
     renderPalettes();
@@ -1804,13 +1806,11 @@
       const ringWidth = rOut - effectiveRIn;
       const rMid = (rOut + effectiveRIn) / 2;
 
-      // 最小セグメント幅に基づき、全セグメント共通の安全な突出角度を決定
       const arrowDist = Math.min(arrow * 1.5, ringWidth * 0.45);
       const maxSafeArrowDeg = Math.max(0, minSpan * 0.35);
       const targetArrowDeg = (arrowDist / rMid) * (180 / Math.PI);
       const commonArrowDeg = (arrow > 0) ? Math.min(targetArrowDeg, maxSafeArrowDeg) : 0;
 
-      // 最小セグメントが消滅しない安全な間隔幅（safeD）を全体共通で適用
       const maxSafeD = Math.max(0, (effectiveRIn * (minSpan * Math.PI / 180) * 0.4));
       const safeD = Math.min(gap / 2, maxSafeD);
 
