@@ -29,6 +29,8 @@
     width: 100%;
     height: 100%;
     height: 100dvh;
+    margin: 0;
+    padding: 0;
     overflow: hidden;
     background-color: var(--bg-dark);
     color: var(--text-main);
@@ -39,15 +41,17 @@
     flex-direction: column;
   }
 
-  /* ヘッダー */
+  /* ヘッダー（モバイル基準） */
   header {
-    height: 44px;
+    height: 42px;
+    min-height: 42px;
+    max-height: 42px;
     background: linear-gradient(90deg, #0b111e 0%, #152238 100%);
     border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 16px;
+    padding: 0 12px;
     flex-shrink: 0;
     z-index: 100;
   }
@@ -87,7 +91,7 @@
   }
 
   .brand-title {
-    font-size: 13.5px;
+    font-size: 12.5px;
     font-weight: 600;
     letter-spacing: 0.3px;
     color: #fff;
@@ -106,6 +110,7 @@
   }
 
   .brand-sub {
+    display: none;
     font-size: 11px;
     color: var(--accent-cyan);
     margin-left: 6px;
@@ -114,7 +119,6 @@
     white-space: nowrap;
   }
 
-  /* 出力ボタン群 */
   .export-group {
     display: flex;
     align-items: center;
@@ -125,9 +129,9 @@
     background: var(--panel-bg);
     color: var(--text-main);
     border: 1px solid var(--border-color);
-    padding: 4px 10px;
+    padding: 4px 8px;
     border-radius: 5px;
-    font-size: 11.5px;
+    font-size: 10.5px;
     cursor: pointer;
     transition: all 0.2s;
     display: flex;
@@ -153,38 +157,31 @@
   }
 
   .btn-text-short {
-    display: none;
-  }
-
-  .btn-text-full {
     display: inline;
   }
 
-  /* ワークスペース */
+  .btn-text-full {
+    display: none;
+  }
+
+  /* ワークスペース（デフォルト：縦積み・モバイルファースト） */
   .workspace {
     display: flex;
+    flex-direction: column;
     flex: 1;
+    min-height: 0;
     overflow: hidden;
   }
 
-  /* サイドバー（PCでは左側） */
-  .sidebar {
-    order: 1;
-    width: 380px;
-    background-color: var(--panel-bg);
-    border-right: 1px solid var(--border-color);
-    overflow-y: auto;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    flex-shrink: 0;
-  }
-
-  /* プレビューエリア（PCでは右側） */
+  /* プレビューエリア（HTML順序通り、確実に画面上部に配置） */
   .preview-area {
-    order: 2;
-    flex: 1;
+    flex: none;
+    width: 100%;
+    height: 200px;
+    max-height: 28vh;
+    padding: 8px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-dark);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -194,16 +191,16 @@
       radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 24px 24px;
     background-position: 0 0, 12px 12px;
-    padding: 16px;
+    z-index: 10;
     overflow: hidden;
   }
 
   .canvas-card {
-    width: 520px;
-    height: 520px;
-    max-width: 85vh;
-    max-height: 85vh;
-    border-radius: 12px;
+    width: auto;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 100%;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -227,6 +224,20 @@
     width: 100%;
     height: 100%;
     user-select: none;
+  }
+
+  /* サイドバー（HTML順序通り、確実に下部の独立スクロール領域に配置） */
+  .sidebar {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    background-color: var(--panel-bg);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   /* 背景設定ボックス（サイドバー最上部） */
@@ -528,75 +539,65 @@
     border-color: var(--accent-cyan);
   }
 
-  /* スマートフォン・小型端末向けレスポンシブ最適化 */
-  @media (max-width: 860px) {
+  /* PC向けレイアウト（画面幅861px以上で横並びに再配置） */
+  @media (min-width: 861px) {
     header {
-      height: 42px;
-      padding: 0 10px;
+      height: 44px;
+      min-height: 44px;
+      max-height: 44px;
+      padding: 0 16px;
     }
 
     .brand-title {
-      font-size: 12.5px;
+      font-size: 13.5px;
     }
 
     .brand-sub {
-      display: none;
-    }
-
-    .btn-text-full {
-      display: none;
-    }
-
-    .btn-text-short {
       display: inline;
     }
 
+    .btn-text-full {
+      display: inline;
+    }
+
+    .btn-text-short {
+      display: none;
+    }
+
     .btn {
-      padding: 4px 8px;
-      font-size: 10.5px;
+      padding: 4px 10px;
+      font-size: 11.5px;
     }
 
-    /* ワークスペースを縦2段に分割 */
     .workspace {
-      flex-direction: column;
-      height: calc(100% - 42px);
-      overflow: hidden;
+      flex-direction: row;
     }
 
-    /* ダイアグラムプレビュー（上部に常時固定表示） */
-    .preview-area {
+    /* PCでは左にサイドバー、右にプレビュー */
+    .sidebar {
       order: 1;
+      width: 380px;
       flex: none;
-      width: 100%;
-      height: 200px;
-      max-height: 28vh;
-      padding: 8px;
-      border-bottom: 1px solid var(--border-color);
-      background-color: var(--bg-dark);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
+      border-right: 1px solid var(--border-color);
+      padding: 12px;
+      gap: 12px;
+    }
+
+    .preview-area {
+      order: 2;
+      flex: 1;
+      height: auto;
+      max-height: none;
+      padding: 16px;
+      border-bottom: none;
     }
 
     .canvas-card {
-      width: auto;
-      height: 100%;
-      aspect-ratio: 1 / 1;
-      max-width: 100%;
-      border-radius: 8px;
-    }
-
-    /* サイドバー（下部の独立スクロール領域） */
-    .sidebar {
-      order: 2;
-      flex: 1;
-      width: 100%;
-      border-right: none;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      padding: 10px;
-      gap: 10px;
+      width: 520px;
+      height: 520px;
+      max-width: 85vh;
+      max-height: 85vh;
+      border-radius: 12px;
     }
   }
 </style>
@@ -622,14 +623,14 @@
 </header>
 
 <div class="workspace">
-  <!-- プレビューエリア（HTML構造上で先に配置） -->
+  <!-- プレビューエリア（HTML順序で先頭配置＝モバイルで常時上部固定） -->
   <main class="preview-area">
     <div class="canvas-card bg-white" id="canvas-card">
       <svg id="diagram-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg"></svg>
     </div>
   </main>
 
-  <!-- サイドバー（設定操作・スクロール領域） -->
+  <!-- サイドバー（HTML順序で2番目配置＝モバイルで常時下部スクロール） -->
   <aside class="sidebar">
     <!-- デザイン確認用背景設定（最上部に配置） -->
     <div class="bg-setting-box">
