@@ -41,7 +41,7 @@
     flex-direction: column;
   }
 
-  /* ヘッダー（モバイル基準） */
+  /* ヘッダー */
   header {
     height: 42px;
     min-height: 42px;
@@ -164,7 +164,7 @@
     display: none;
   }
 
-  /* ワークスペース（デフォルト：縦積み・モバイルファースト） */
+  /* ワークスペース */
   .workspace {
     display: flex;
     flex-direction: column;
@@ -173,12 +173,12 @@
     overflow: hidden;
   }
 
-  /* プレビューエリア（HTML順序通り、確実に画面上部に配置） */
+  /* プレビューエリア（スマホ版：1.2倍サイズに調整） */
   .preview-area {
     flex: none;
     width: 100%;
-    height: 200px;
-    max-height: 28vh;
+    height: 240px;
+    max-height: 34vh;
     padding: 8px;
     border-bottom: 1px solid var(--border-color);
     background-color: var(--bg-dark);
@@ -226,7 +226,7 @@
     user-select: none;
   }
 
-  /* サイドバー（HTML順序通り、確実に下部の独立スクロール領域に配置） */
+  /* サイドバー */
   .sidebar {
     flex: 1;
     min-height: 0;
@@ -539,7 +539,7 @@
     border-color: var(--accent-cyan);
   }
 
-  /* PC向けレイアウト（画面幅861px以上で横並びに再配置） */
+  /* PC向けレイアウト */
   @media (min-width: 861px) {
     header {
       height: 44px;
@@ -573,7 +573,6 @@
       flex-direction: row;
     }
 
-    /* PCでは左にサイドバー、右にプレビュー */
     .sidebar {
       order: 1;
       width: 380px;
@@ -623,16 +622,16 @@
 </header>
 
 <div class="workspace">
-  <!-- プレビューエリア（HTML順序で先頭配置＝モバイルで常時上部固定） -->
+  <!-- プレビューエリア -->
   <main class="preview-area">
     <div class="canvas-card bg-white" id="canvas-card">
       <svg id="diagram-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg"></svg>
     </div>
   </main>
 
-  <!-- サイドバー（HTML順序で2番目配置＝モバイルで常時下部スクロール） -->
+  <!-- サイドバー -->
   <aside class="sidebar">
-    <!-- デザイン確認用背景設定（最上部に配置） -->
+    <!-- デザイン確認用背景設定 -->
     <div class="bg-setting-box">
       <span class="bg-setting-label">デザイン確認用背景設定：</span>
       <div class="btn-toggle-group">
