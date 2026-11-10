@@ -505,7 +505,65 @@
     height: 100%;
     user-select: none;
   }
+/* スマートフォン・小型端末向けレスポンシブ調整 */
+@media (max-width: 860px) {
+  body {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+  }
+
+  header {
+    height: auto;
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .brand-sub {
+    display: none;
+  }
+
+  .export-group {
+    width: 100%;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .workspace {
+    flex-direction: column-reverse;
+    height: auto;
+    overflow: visible;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-top: 1px solid var(--border-color);
+    overflow: visible;
+  }
+
+  .preview-area {
+    width: 100%;
+    padding: 24px 16px;
+    min-height: auto;
+  }
+
+  .canvas-card {
+    width: 100%;
+    max-width: 340px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .preview-toolbar {
+    position: static;
+    margin-top: 12px;
+  }
+}
 </style>
+
+
 </head>
 <body>
 
