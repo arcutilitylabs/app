@@ -41,7 +41,7 @@
     flex-direction: column;
   }
 
-  /* ヘッダー */
+  /* ヘッダー（モバイル基準） */
   header {
     height: 42px;
     min-height: 42px;
@@ -51,7 +51,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 12px;
+    padding: 0 10px;
     flex-shrink: 0;
     z-index: 100;
   }
@@ -245,7 +245,7 @@
     display: none;
   }
 
-  /* ワークスペース */
+  /* ワークスペース（縦積み・モバイルファースト） */
   .workspace {
     display: flex;
     flex-direction: column;
@@ -254,12 +254,12 @@
     overflow: hidden;
   }
 
-  /* プレビューエリア（スマホ版：1.2倍サイズに調整） */
+  /* プレビューエリア（従来の約1.5倍サイズ：高さ300px / 最大42vh） */
   .preview-area {
     flex: none;
     width: 100%;
-    height: 240px;
-    max-height: 34vh;
+    height: 300px;
+    max-height: 42vh;
     padding: 8px;
     border-bottom: 1px solid var(--border-color);
     background-color: var(--bg-dark);
@@ -307,7 +307,7 @@
     user-select: none;
   }
 
-  /* サイドバー */
+  /* サイドバー（下部スクロール領域） */
   .sidebar {
     flex: 1;
     min-height: 0;
@@ -745,7 +745,7 @@
     text-align: center;
   }
 
-  /* PC向けレイアウト */
+  /* PC向けレイアウト（画面幅861px以上） */
   @media (min-width: 861px) {
     header {
       height: 44px;
@@ -771,8 +771,19 @@
     }
 
     .btn {
-      padding: 4px 10px;
+      padding: 4px 9px;
       font-size: 11.5px;
+      gap: 4px;
+    }
+
+    .btn-help {
+      width: 25px;
+      height: 25px;
+      font-size: 12px;
+    }
+
+    .help-popover {
+      width: 300px;
     }
 
     .workspace {
