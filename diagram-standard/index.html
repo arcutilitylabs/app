@@ -164,7 +164,7 @@
     display: none;
   }
 
-  /* ワークスペース */
+  /* ワークスペース（縦積み・モバイル基準） */
   .workspace {
     display: flex;
     flex-direction: column;
@@ -173,12 +173,12 @@
     overflow: hidden;
   }
 
-  /* プレビューエリア（スマホ版：1.2倍サイズに調整） */
+  /* プレビューエリア（従来の約1.5倍サイズ：高さ300px / 最大42vh） */
   .preview-area {
     flex: none;
     width: 100%;
-    height: 240px;
-    max-height: 34vh;
+    height: 300px;
+    max-height: 42vh;
     padding: 8px;
     border-bottom: 1px solid var(--border-color);
     background-color: var(--bg-dark);
@@ -226,7 +226,7 @@
     user-select: none;
   }
 
-  /* サイドバー */
+  /* サイドバー（下部スクロール領域） */
   .sidebar {
     flex: 1;
     min-height: 0;
@@ -539,7 +539,7 @@
     border-color: var(--accent-cyan);
   }
 
-  /* PC向けレイアウト */
+  /* PC向けレイアウト（画面幅861px以上） */
   @media (min-width: 861px) {
     header {
       height: 44px;
