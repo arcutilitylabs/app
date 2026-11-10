@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Arc Diagram Generator Pro | Arc Utility Labs</title>
 <style>
   :root {
@@ -25,19 +25,23 @@
     font-family: 'Hiragino Kaku Gothic ProN', 'Segoe UI', 'Meiryo', sans-serif;
   }
 
-  body {
-    background-color: var(--bg-dark);
-    color: var(--text-main);
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+  html, body {
+    width: 100%;
+    height: 100%;
     height: 100dvh;
     overflow: hidden;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
   }
 
-  /* ヘッダー：上下幅を抑えたスリム設計 */
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ヘッダー */
   header {
-    min-height: 44px;
+    height: 44px;
     background: linear-gradient(90deg, #0b111e 0%, #152238 100%);
     border-bottom: 1px solid var(--border-color);
     display: flex;
@@ -55,8 +59,8 @@
   }
 
   .brand-logo {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border: 2px solid var(--accent-cyan);
     border-radius: 50%;
     position: relative;
@@ -69,10 +73,10 @@
 
   .brand-logo::after {
     content: '';
-    width: 8px;
-    height: 4px;
+    width: 7px;
+    height: 3px;
     border-bottom: 2px solid var(--accent-cyan);
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 7px 7px;
     margin-top: 2px;
   }
 
@@ -83,9 +87,9 @@
   }
 
   .brand-title {
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 600;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.3px;
     color: #fff;
     white-space: nowrap;
   }
@@ -93,9 +97,9 @@
   .pro-badge {
     background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
     color: #000;
-    font-size: 9px;
+    font-size: 8.5px;
     font-weight: 800;
-    padding: 1px 5px;
+    padding: 1px 4px;
     border-radius: 3px;
     letter-spacing: 0.5px;
   }
@@ -109,7 +113,7 @@
     white-space: nowrap;
   }
 
-  /* 出力ボタングループ：1行集約型 */
+  /* 出力ボタン群 */
   .export-group {
     display: flex;
     align-items: center;
@@ -124,8 +128,8 @@
   }
 
   .btn-help {
-    width: 26px;
-    height: 26px;
+    width: 25px;
+    height: 25px;
     border-radius: 50%;
     background: var(--panel-bg);
     border: 1px solid var(--border-color);
@@ -201,7 +205,7 @@
     background: var(--panel-bg);
     color: var(--text-main);
     border: 1px solid var(--border-color);
-    padding: 5px 10px;
+    padding: 4px 9px;
     border-radius: 5px;
     font-size: 11.5px;
     cursor: pointer;
@@ -228,14 +232,24 @@
     opacity: 0.92;
   }
 
+  .btn-text-short {
+    display: none;
+  }
+
+  .btn-text-full {
+    display: inline;
+  }
+
+  /* ワークスペース */
   .workspace {
     display: flex;
     flex: 1;
     overflow: hidden;
   }
 
-  /* サイドバー */
+  /* サイドバー（PCでは左側） */
   .sidebar {
+    order: 1;
     width: 380px;
     background-color: var(--panel-bg);
     border-right: 1px solid var(--border-color);
@@ -247,12 +261,60 @@
     flex-shrink: 0;
   }
 
+  /* プレビューエリア（PCでは右側） */
+  .preview-area {
+    order: 2;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-image: 
+      radial-gradient(rgba(0, 210, 255, 0.07) 1px, transparent 1px),
+      radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: 0 0, 12px 12px;
+    padding: 16px;
+    overflow: hidden;
+  }
+
+  .canvas-card {
+    width: 520px;
+    height: 520px;
+    max-width: 85vh;
+    max-height: 85vh;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+
+  .canvas-card.bg-white {
+    background: #ffffff;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+  }
+
+  .canvas-card.bg-dark {
+    background: #0f172a;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+    user-select: none;
+  }
+
   /* 背景設定ボックス（サイドバー最上部） */
   .bg-setting-box {
     background: rgba(11, 17, 30, 0.6);
     border: 1px solid var(--border-color);
     border-radius: 6px;
-    padding: 8px 10px;
+    padding: 7px 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -671,121 +733,83 @@
     text-align: center;
   }
 
-  /* プレビュー表示エリア */
-  .preview-area {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    background-image: 
-      radial-gradient(rgba(0, 210, 255, 0.07) 1px, transparent 1px),
-      radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 24px 24px;
-    background-position: 0 0, 12px 12px;
-    padding: 16px;
-  }
-
-  .canvas-card {
-    width: 520px;
-    height: 520px;
-    max-width: 85vh;
-    max-height: 85vh;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    transition: background 0.2s;
-  }
-
-  .canvas-card.bg-white {
-    background: #ffffff;
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
-  }
-
-  .canvas-card.bg-dark {
-    background: #0f172a;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
-  }
-
-  svg {
-    width: 100%;
-    height: 100%;
-    user-select: none;
-  }
-
   /* スマートフォン・小型端末向けレスポンシブ最適化 */
   @media (max-width: 860px) {
     header {
-      padding: 6px 10px;
-      flex-direction: column;
-      gap: 6px;
-      align-items: stretch;
-      min-height: auto;
+      height: 42px;
+      padding: 0 10px;
     }
 
-    .brand {
-      justify-content: space-between;
-      width: 100%;
+    .brand-title {
+      font-size: 12.5px;
     }
 
     .brand-sub {
       display: none;
     }
 
+    .btn-text-full {
+      display: none;
+    }
+
+    .btn-text-short {
+      display: inline;
+    }
+
     .export-group {
-      width: 100%;
-      justify-content: space-between;
       gap: 4px;
     }
 
-    .export-group .btn {
-      flex: 1;
-      padding: 5px 3px;
+    .btn {
+      padding: 4px 6px;
       font-size: 10.5px;
-      justify-content: center;
       gap: 2px;
     }
 
     .btn-help {
-      width: 25px;
-      height: 25px;
+      width: 23px;
+      height: 23px;
       font-size: 11px;
     }
 
     .help-popover {
-      left: 0;
-      right: auto;
-      width: calc(100vw - 20px);
+      left: auto;
+      right: 0;
+      width: min(290px, 92vw);
     }
 
+    /* ワークスペースを縦2段に分割 */
     .workspace {
       flex-direction: column;
-      height: calc(100vh - 72px);
-      height: calc(100dvh - 72px);
+      height: calc(100% - 42px);
       overflow: hidden;
     }
 
-    /* プレビューエリアを上部に固定配置 */
+    /* ダイアグラムプレビュー（上部に常時固定表示） */
     .preview-area {
       order: 1;
       flex: none;
       width: 100%;
-      padding: 8px 12px;
+      height: 200px;
+      max-height: 28vh;
+      padding: 8px;
       border-bottom: 1px solid var(--border-color);
       background-color: var(--bg-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       z-index: 10;
     }
 
     .canvas-card {
-      width: min(205px, 28vh);
-      height: min(205px, 28vh);
+      width: auto;
+      height: 100%;
+      aspect-ratio: 1 / 1;
+      max-width: 100%;
       border-radius: 8px;
     }
 
-    /* サイドバーを下部でスクロール可能に設計 */
+    /* サイドバー（下部の独立スクロール領域） */
     .sidebar {
       order: 2;
       flex: 1;
@@ -803,12 +827,10 @@
 
 <header>
   <div class="brand">
-    <div style="display:flex; align-items:center; gap:8px;">
-      <div class="brand-logo"></div>
-      <div class="brand-title-wrap">
-        <span class="brand-title">Arc Diagram Generator</span>
-        <span class="pro-badge">PRO</span>
-      </div>
+    <div class="brand-logo"></div>
+    <div class="brand-title-wrap">
+      <span class="brand-title">Arc Diagram</span>
+      <span class="pro-badge">PRO</span>
     </div>
     <span class="brand-sub">Arc Utility Labs</span>
   </div>
@@ -841,13 +863,30 @@
       </div>
     </div>
 
-    <button class="btn btn-primary" id="btn-copy" onclick="copyPNGToClipboard()">クリップボードにコピー</button>
-    <button class="btn" onclick="downloadSVG()">SVGを保存</button>
-    <button class="btn" onclick="downloadPNG()">透過PNGを保存</button>
+    <button class="btn btn-primary" id="btn-copy" onclick="copyPNGToClipboard()">
+      <span class="btn-text-full">クリップボードにコピー</span>
+      <span class="btn-text-short">コピー</span>
+    </button>
+    <button class="btn" onclick="downloadSVG()">
+      <span class="btn-text-full">SVGを保存</span>
+      <span class="btn-text-short">SVG</span>
+    </button>
+    <button class="btn" onclick="downloadPNG()">
+      <span class="btn-text-full">透過PNGを保存</span>
+      <span class="btn-text-short">PNG</span>
+    </button>
   </div>
 </header>
 
 <div class="workspace">
+  <!-- プレビューエリア（HTML構造上で先に配置） -->
+  <main class="preview-area">
+    <div class="canvas-card bg-white" id="canvas-card">
+      <svg id="diagram-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </main>
+
+  <!-- サイドバー（設定操作・スクロール領域） -->
   <aside class="sidebar">
     <!-- デザイン確認用背景設定（最上部に配置） -->
     <div class="bg-setting-box">
@@ -1036,12 +1075,6 @@
       <input type="file" id="input-import-file" accept=".json" style="display:none;" onchange="importSettingsFile(event)">
     </div>
   </aside>
-
-  <main class="preview-area">
-    <div class="canvas-card bg-white" id="canvas-card">
-      <svg id="diagram-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg"></svg>
-    </div>
-  </main>
 </div>
 
 <script>
@@ -2093,6 +2126,8 @@
 
   function copyPNGToClipboard() {
     const btn = document.getElementById('btn-copy');
+    const spanFull = btn.querySelector('.btn-text-full');
+    const spanShort = btn.querySelector('.btn-text-short');
     const svgEl = document.getElementById('diagram-svg');
     const serializer = new XMLSerializer();
     const svgStr = serializer.serializeToString(svgEl);
@@ -2112,11 +2147,16 @@
         if (!blob) return;
         try {
           await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-          const originalText = btn.textContent;
-          btn.textContent = 'コピー完了！';
+          if (spanFull && spanShort) {
+            spanFull.textContent = 'コピー完了！';
+            spanShort.textContent = '完了！';
+          }
           btn.style.borderColor = 'var(--accent-cyan)';
           setTimeout(() => {
-            btn.textContent = originalText;
+            if (spanFull && spanShort) {
+              spanFull.textContent = 'クリップボードにコピー';
+              spanShort.textContent = 'コピー';
+            }
             btn.style.borderColor = 'var(--border-color)';
           }, 2000);
         } catch (err) {
