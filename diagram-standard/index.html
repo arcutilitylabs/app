@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Arc Diagram Generator | Arc Utility Labs</title>
 <style>
   :root {
@@ -25,17 +25,23 @@
     font-family: 'Hiragino Kaku Gothic ProN', 'Segoe UI', 'Meiryo', sans-serif;
   }
 
-  body {
+  html, body {
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    overflow: hidden;
     background-color: var(--bg-dark);
     color: var(--text-main);
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
   }
 
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ヘッダー */
   header {
-    height: 46px;
+    height: 44px;
     background: linear-gradient(90deg, #0b111e 0%, #152238 100%);
     border-bottom: 1px solid var(--border-color);
     display: flex;
@@ -43,69 +49,75 @@
     justify-content: space-between;
     padding: 0 16px;
     flex-shrink: 0;
+    z-index: 100;
   }
 
   .brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
 
   .brand-logo {
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    height: 18px;
     border: 2px solid var(--accent-cyan);
     border-radius: 50%;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 8px rgba(0, 210, 255, 0.4);
+    box-shadow: 0 0 6px rgba(0, 210, 255, 0.4);
+    flex-shrink: 0;
   }
 
   .brand-logo::after {
     content: '';
-    width: 9px;
-    height: 4px;
+    width: 7px;
+    height: 3px;
     border-bottom: 2px solid var(--accent-cyan);
-    border-radius: 0 0 8px 8px;
-    margin-top: 3px;
+    border-radius: 0 0 7px 7px;
+    margin-top: 2px;
   }
 
   .brand-title-wrap {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
 
   .brand-title {
-    font-size: 15px;
+    font-size: 13.5px;
     font-weight: 600;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
     color: #fff;
+    white-space: nowrap;
   }
 
   .free-badge {
-    background: rgba(139, 155, 180, 0.12);
+    background: rgba(139, 155, 180, 0.15);
     border: 1px solid var(--border-color);
     color: var(--text-muted);
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 4px;
+    font-size: 8.5px;
+    font-weight: 800;
+    padding: 1px 4px;
+    border-radius: 3px;
     letter-spacing: 0.5px;
   }
 
   .brand-sub {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--accent-cyan);
-    margin-left: 8px;
-    padding-left: 8px;
+    margin-left: 6px;
+    padding-left: 6px;
     border-left: 1px solid var(--border-color);
+    white-space: nowrap;
   }
 
+  /* 出力ボタン群 */
   .export-group {
     display: flex;
+    align-items: center;
     gap: 6px;
   }
 
@@ -113,14 +125,14 @@
     background: var(--panel-bg);
     color: var(--text-main);
     border: 1px solid var(--border-color);
-    padding: 5px 12px;
+    padding: 4px 10px;
     border-radius: 5px;
-    font-size: 12px;
+    font-size: 11.5px;
     cursor: pointer;
     transition: all 0.2s;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
     white-space: nowrap;
   }
 
@@ -134,69 +146,119 @@
     border: none;
     color: #fff;
     font-weight: 600;
-    box-shadow: 0 2px 8px rgba(0, 114, 255, 0.3);
   }
 
   .btn-primary:hover {
     opacity: 0.92;
-    transform: translateY(-1px);
-  }
-
-  .btn-text-full {
-    display: inline;
   }
 
   .btn-text-short {
     display: none;
   }
 
+  .btn-text-full {
+    display: inline;
+  }
+
+  /* ワークスペース */
   .workspace {
     display: flex;
     flex: 1;
     overflow: hidden;
   }
 
+  /* サイドバー（PCでは左側） */
   .sidebar {
+    order: 1;
     width: 380px;
     background-color: var(--panel-bg);
     border-right: 1px solid var(--border-color);
     overflow-y: auto;
-    padding: 14px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
     flex-shrink: 0;
   }
 
-  .bg-select-bar {
+  /* プレビューエリア（PCでは右側） */
+  .preview-area {
+    order: 2;
+    flex: 1;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    position: relative;
+    background-image: 
+      radial-gradient(rgba(0, 210, 255, 0.07) 1px, transparent 1px),
+      radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: 0 0, 12px 12px;
+    padding: 16px;
+    overflow: hidden;
+  }
+
+  .canvas-card {
+    width: 520px;
+    height: 520px;
+    max-width: 85vh;
+    max-height: 85vh;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+
+  .canvas-card.bg-white {
+    background: #ffffff;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+  }
+
+  .canvas-card.bg-dark {
+    background: #0f172a;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+    user-select: none;
+  }
+
+  /* 背景設定ボックス（サイドバー最上部） */
+  .bg-setting-box {
     background: rgba(11, 17, 30, 0.6);
     border: 1px solid var(--border-color);
     border-radius: 6px;
-    padding: 8px 12px;
-    flex-shrink: 0;
+    padding: 7px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
   }
 
-  .bg-select-label {
+  .bg-setting-label {
     font-size: 11px;
     color: var(--text-muted);
-    letter-spacing: 0.3px;
+    white-space: nowrap;
   }
 
   .section-box {
     background: rgba(11, 17, 30, 0.5);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    padding: 14px;
+    padding: 12px;
   }
 
   .section-label {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--accent-cyan);
     letter-spacing: 0.8px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -205,16 +267,16 @@
   .mode-list-vertical {
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 6px;
   }
 
   .mode-btn {
     background: var(--bg-dark);
     border: 1px solid var(--border-color);
     color: var(--text-muted);
-    padding: 10px 12px;
-    border-radius: 6px;
-    font-size: 12px;
+    padding: 8px 10px;
+    border-radius: 5px;
+    font-size: 11.5px;
     cursor: pointer;
     text-align: left;
     transition: all 0.15s;
@@ -231,7 +293,7 @@
   }
 
   .control-row {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
   .control-row:last-child {
@@ -241,8 +303,8 @@
   .control-header {
     display: flex;
     justify-content: space-between;
-    font-size: 12px;
-    margin-bottom: 5px;
+    font-size: 11px;
+    margin-bottom: 4px;
     color: var(--text-main);
   }
 
@@ -255,7 +317,7 @@
     width: 100%;
     accent-color: var(--accent-cyan);
     cursor: pointer;
-    height: 5px;
+    height: 4px;
     background: var(--bg-dark);
     border-radius: 4px;
   }
@@ -265,9 +327,9 @@
     background: var(--bg-dark);
     border: 1px solid var(--border-color);
     color: var(--text-main);
-    padding: 7px 10px;
+    padding: 6px 8px;
     border-radius: 4px;
-    font-size: 12px;
+    font-size: 11.5px;
     outline: none;
     cursor: pointer;
   }
@@ -281,15 +343,15 @@
     border: 1px solid var(--border-color);
     border-left: 3px solid var(--accent-cyan);
     border-radius: 6px;
-    padding: 12px;
-    margin-top: 14px;
+    padding: 10px;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
 
   .sub-group-header {
-    font-size: 11px;
+    font-size: 10.5px;
     color: var(--accent-cyan);
     letter-spacing: 0.5px;
     font-weight: 600;
@@ -304,11 +366,12 @@
     background: var(--bg-dark);
     border: 1px solid var(--border-color);
     color: var(--text-muted);
-    padding: 4px 10px;
+    padding: 4px 8px;
     border-radius: 4px;
-    font-size: 11px;
+    font-size: 10.5px;
     cursor: pointer;
     transition: all 0.2s;
+    white-space: nowrap;
   }
 
   .mini-btn.active {
@@ -321,8 +384,8 @@
   .palette-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-bottom: 12px;
+    gap: 6px;
+    margin-bottom: 10px;
   }
 
   .palette-item {
@@ -331,10 +394,10 @@
     justify-content: space-between;
     background: var(--bg-dark);
     border: 1px solid var(--border-color);
-    padding: 7px 10px;
-    border-radius: 6px;
+    padding: 6px 8px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 11.5px;
   }
 
   .palette-item.active {
@@ -344,13 +407,13 @@
 
   .swatches {
     display: flex;
-    gap: 4px;
+    gap: 3px;
   }
 
   .swatch {
-    width: 14px;
-    height: 14px;
-    border-radius: 3px;
+    width: 13px;
+    height: 13px;
+    border-radius: 2px;
   }
 
   .custom-palette-row {
@@ -359,22 +422,22 @@
     justify-content: space-between;
     background: var(--bg-dark);
     border: 1px dashed var(--border-color);
-    padding: 7px 10px;
-    border-radius: 6px;
-    font-size: 12px;
+    padding: 6px 8px;
+    border-radius: 5px;
+    font-size: 11px;
   }
 
   .custom-picker-wrap {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
 
   .custom-picker-wrap input[type="color"] {
     -webkit-appearance: none;
     border: 1px solid var(--border-color);
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     border-radius: 4px;
     cursor: pointer;
     background: none;
@@ -387,18 +450,18 @@
 
   .custom-picker-wrap input[type="color"]::-webkit-color-swatch {
     border: none;
-    border-radius: 3px;
+    border-radius: 2px;
   }
 
   .labels-header-sub {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .reset-link {
-    font-size: 11px;
+    font-size: 10.5px;
     color: var(--accent-cyan);
     cursor: pointer;
     text-decoration: underline;
@@ -407,8 +470,8 @@
   .labels-container {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    max-height: 220px;
+    gap: 5px;
+    max-height: 200px;
     overflow-y: auto;
     padding-right: 4px;
   }
@@ -416,14 +479,14 @@
   .label-row {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
   }
 
   .label-index {
-    width: 24px;
-    height: 24px;
-    border-radius: 4px;
-    font-size: 11px;
+    width: 22px;
+    height: 22px;
+    border-radius: 3px;
+    font-size: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -455,9 +518,9 @@
     background: var(--bg-dark);
     border: 1px solid var(--border-color);
     color: #fff;
-    padding: 5px 8px;
+    padding: 4px 6px;
     border-radius: 4px;
-    font-size: 12px;
+    font-size: 11.5px;
   }
 
   .label-input:focus {
@@ -465,130 +528,75 @@
     border-color: var(--accent-cyan);
   }
 
-  .preview-area {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    background-image: 
-      radial-gradient(rgba(0, 210, 255, 0.07) 1px, transparent 1px),
-      radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 24px 24px;
-    background-position: 0 0, 12px 12px;
-  }
-
-  .canvas-card {
-    width: 560px;
-    height: 560px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    transition: background 0.2s;
-  }
-
-  .canvas-card.bg-white {
-    background: #ffffff;
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
-  }
-
-  .canvas-card.bg-dark {
-    background: #0f172a;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
-  }
-
-  svg {
-    width: 100%;
-    height: 100%;
-    user-select: none;
-  }
-
-  /* スマートフォン・小型端末向けレスポンシブ（常時プレビュー固定） */
+  /* スマートフォン・小型端末向けレスポンシブ最適化 */
   @media (max-width: 860px) {
-    body {
-      height: 100vh;
-      overflow: hidden;
-    }
-
     header {
       height: 42px;
       padding: 0 10px;
-      flex-wrap: nowrap;
-      gap: 6px;
-    }
-
-    .brand {
-      gap: 6px;
-    }
-
-    .brand-logo {
-      width: 18px;
-      height: 18px;
     }
 
     .brand-title {
-      font-size: 13px;
+      font-size: 12.5px;
     }
 
     .brand-sub {
       display: none;
     }
 
-    .export-group {
-      gap: 4px;
-      flex-shrink: 0;
+    .btn-text-full {
+      display: none;
+    }
+
+    .btn-text-short {
+      display: inline;
     }
 
     .btn {
       padding: 4px 8px;
-      font-size: 11px;
-      gap: 2px;
-      border-radius: 4px;
+      font-size: 10.5px;
     }
 
-    .btn-text-full {
-      display: none;
-    }
-    .btn-text-short {
-      display: inline;
-      font-weight: 600;
-    }
-
+    /* ワークスペースを縦2段に分割 */
     .workspace {
       flex-direction: column;
-      height: calc(100vh - 42px);
+      height: calc(100% - 42px);
       overflow: hidden;
     }
 
+    /* ダイアグラムプレビュー（上部に常時固定表示） */
     .preview-area {
+      order: 1;
       flex: none;
       width: 100%;
-      height: 240px;
+      height: 200px;
+      max-height: 28vh;
       padding: 8px;
       border-bottom: 1px solid var(--border-color);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      background-color: var(--bg-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       z-index: 10;
-      background-size: 16px 16px;
     }
 
     .canvas-card {
-      width: 224px;
-      height: 224px;
+      width: auto;
+      height: 100%;
+      aspect-ratio: 1 / 1;
+      max-width: 100%;
       border-radius: 8px;
     }
 
+    /* サイドバー（下部の独立スクロール領域） */
     .sidebar {
+      order: 2;
       flex: 1;
       width: 100%;
       border-right: none;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      padding: 12px;
-      gap: 12px;
+      padding: 10px;
+      gap: 10px;
     }
   }
 </style>
@@ -599,31 +607,40 @@
   <div class="brand">
     <div class="brand-logo"></div>
     <div class="brand-title-wrap">
-      <span class="brand-title">Arc Diagram Generator</span>
+      <span class="brand-title">Arc Diagram</span>
       <span class="free-badge">FREE</span>
     </div>
     <span class="brand-sub">Arc Utility Labs</span>
   </div>
+
   <div class="export-group">
     <button class="btn btn-primary" onclick="downloadPNG()">
       <span class="btn-text-full">透過PNGを保存</span>
-      <span class="btn-text-short">PNG保存</span>
+      <span class="btn-text-short">PNG</span>
     </button>
   </div>
 </header>
 
 <div class="workspace">
+  <!-- プレビューエリア（HTML構造上で先に配置） -->
+  <main class="preview-area">
+    <div class="canvas-card bg-white" id="canvas-card">
+      <svg id="diagram-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </main>
+
+  <!-- サイドバー（設定操作・スクロール領域） -->
   <aside class="sidebar">
-    <!-- デザイン確認用背景設定（01の直上・スクロール連動） -->
-    <div class="bg-select-bar">
-      <span class="bg-select-label">デザイン確認用背景設定：</span>
+    <!-- デザイン確認用背景設定（最上部に配置） -->
+    <div class="bg-setting-box">
+      <span class="bg-setting-label">デザイン確認用背景設定：</span>
       <div class="btn-toggle-group">
-        <button class="mini-btn active" id="bg-btn-white" onclick="setPreviewBg('bg-white', this)">ホワイト</button>
-        <button class="mini-btn" id="bg-btn-dark" onclick="setPreviewBg('bg-dark', this)">ブラック</button>
+        <button class="mini-btn active" id="btn-bg-white" onclick="setPreviewBg('bg-white')">ホワイト</button>
+        <button class="mini-btn" id="btn-bg-dark" onclick="setPreviewBg('bg-dark')">ブラック</button>
       </div>
     </div>
 
-    <!-- 01: モード選択（縦並び） -->
+    <!-- 01: モード選択 -->
     <div class="section-box">
       <div class="section-label"><span>01 / DIAGRAM MODE</span></div>
       <div class="mode-list-vertical">
@@ -726,7 +743,7 @@
           </div>
         </div>
 
-        <div class="control-row" style="margin-bottom:0;">
+        <div class="control-row" style="margin-bottom:0;" id="row-base-font-size">
           <div class="control-header">
             <span>文字サイズ</span>
             <span class="control-val" id="val-font">16px</span>
@@ -735,7 +752,7 @@
         </div>
 
         <!-- レーダー用：文字位置 -->
-        <div class="control-row" id="row-label-offset" style="display:none; margin-bottom:0; margin-top:12px;">
+        <div class="control-row" id="row-label-offset" style="display:none; margin-bottom:0; margin-top:10px;">
           <div class="control-header">
             <span>文字位置</span>
             <span class="control-val" id="val-label-offset">32px</span>
@@ -751,7 +768,7 @@
       <div class="palette-list" id="palette-container"></div>
 
       <div class="custom-palette-row">
-        <span>カスタム基準色（1色から自動生成）</span>
+        <span>カスタム基準色（自動生成）</span>
         <div class="custom-picker-wrap">
           <input type="color" id="base-color-picker" value="#00d2ff" onchange="generateCustomPalette(this.value)">
         </div>
@@ -762,21 +779,15 @@
     <div class="section-box">
       <div class="section-label">
         <span>04 / TEXT LABELS</span>
-        <span style="font-size:11px; color:var(--text-muted);">改行は「/」を入力</span>
+        <span style="font-size:10px; color:var(--text-muted);">改行は「/」</span>
       </div>
       <div class="labels-header-sub">
-        <span style="font-size:11px; color:var(--text-muted);">番号クリックで個別色指定</span>
+        <span style="font-size:10.5px; color:var(--text-muted);">番号クリックで個別色指定</span>
         <span class="reset-link" onclick="resetOverrideColors()">個別色をリセット</span>
       </div>
       <div class="labels-container" id="labels-list"></div>
     </div>
   </aside>
-
-  <main class="preview-area">
-    <div class="canvas-card bg-white" id="canvas-card">
-      <svg id="diagram-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg"></svg>
-    </div>
-  </main>
 </div>
 
 <script>
@@ -820,13 +831,6 @@
     renderPalettes();
     renderLabelInputs();
     render();
-  }
-
-  function setPreviewBg(bgClass, btn) {
-    const card = document.getElementById('canvas-card');
-    card.className = 'canvas-card ' + bgClass;
-    document.getElementById('bg-btn-white').classList.toggle('active', bgClass === 'bg-white');
-    document.getElementById('bg-btn-dark').classList.toggle('active', bgClass === 'bg-dark');
   }
 
   function hexToHsl(hex) {
@@ -1129,6 +1133,13 @@
     render();
   }
 
+  function setPreviewBg(bgClass) {
+    const card = document.getElementById('canvas-card');
+    card.className = 'canvas-card ' + bgClass;
+    document.getElementById('btn-bg-white').classList.toggle('active', bgClass === 'bg-white');
+    document.getElementById('btn-bg-dark').classList.toggle('active', bgClass === 'bg-dark');
+  }
+
   function polarToCartesian(cx, cy, r, angleDeg) {
     const rad = (angleDeg - 90) * Math.PI / 180.0;
     return {
@@ -1191,23 +1202,10 @@
     ].join(' ');
   }
 
-  function createChevronSegmentPath(cx, cy, rOut, rIn, startAngle, endAngle, gapPx, arrowVal) {
-    const step = endAngle - startAngle;
-    const rMid = (rOut + rIn) / 2;
-    const ringWidth = rOut - rIn;
-
-    const arrowDist = Math.min(arrowVal * 1.5, ringWidth * 0.45);
-    const arrowDeg = Math.min(step * 0.28, (arrowDist / rMid) * (180 / Math.PI));
-
-    const arcLenIn = Math.max(1, rIn) * (step * Math.PI / 180);
-    const maxSafeGap = Math.max(0, arcLenIn * 0.8 - 4);
-    const safeGap = Math.min(Math.max(0, gapPx), maxSafeGap);
-
-    const d = safeGap / 2;
-
-    const offsetOut = (d / rOut) * (180 / Math.PI);
-    const offsetMid = (d / rMid) * (180 / Math.PI);
-    const offsetIn = (d / Math.max(1, rIn)) * (180 / Math.PI);
+  function createChevronSegmentPath(cx, cy, rOut, rIn, startAngle, endAngle, safeD, arrowDeg) {
+    const offsetOut = (safeD / rOut) * (180 / Math.PI);
+    const offsetMid = (safeD / ((rOut + rIn) / 2)) * (180 / Math.PI);
+    const offsetIn = (safeD / Math.max(1, rIn)) * (180 / Math.PI);
 
     const aOutStart = startAngle + offsetOut;
     const aMidIndent = startAngle + arrowDeg + offsetMid;
@@ -1219,6 +1217,7 @@
 
     if (aOutEnd <= aOutStart || aInEnd <= aInStart) return '';
 
+    const rMid = (rOut + rIn) / 2;
     const pOutStart = polarToCartesian(cx, cy, rOut, aOutStart);
     const pOutEnd = polarToCartesian(cx, cy, rOut, aOutEnd);
     const pTip = polarToCartesian(cx, cy, rMid, aMidTip);
@@ -1294,9 +1293,14 @@
 
       const ringWidth = rOut - effectiveRIn;
       const rMid = (rOut + effectiveRIn) / 2;
+
       const arrowDist = Math.min(arrow * 1.5, ringWidth * 0.45);
-      const arrowDeg = (arrow > 0) ? Math.min(step * 0.28, (arrowDist / rMid) * (180 / Math.PI)) : 0;
-      const arrowOffset = arrowDeg / 2;
+      const maxSafeArrowDeg = Math.max(0, step * 0.35);
+      const targetArrowDeg = (arrowDist / rMid) * (180 / Math.PI);
+      const commonArrowDeg = (arrow > 0) ? Math.min(targetArrowDeg, maxSafeArrowDeg) : 0;
+
+      const maxSafeD = Math.max(0, (effectiveRIn * (step * Math.PI / 180) * 0.4));
+      const safeD = Math.min(gap / 2, maxSafeD);
 
       for (let i = 0; i < n; i++) {
         const startAngle = i * step + rot;
@@ -1309,11 +1313,12 @@
         if (arrow === 0) {
           d = createDonutSegmentPath(cx, cy, rOut, effectiveRIn, startAngle, endAngle, gap);
         } else {
-          d = createChevronSegmentPath(cx, cy, rOut, effectiveRIn, startAngle, endAngle, gap, arrow);
+          d = createChevronSegmentPath(cx, cy, rOut, effectiveRIn, startAngle, endAngle, safeD, commonArrowDeg);
         }
 
         html += `<path d="${d}" fill="${color}" />`;
 
+        const arrowOffset = commonArrowDeg / 2;
         const midAngle = (startAngle + endAngle) / 2 + arrowOffset;
         const labelPos = polarToCartesian(cx, cy, labelRadius, midAngle);
         html += renderMultilineText(labelPos.x, labelPos.y, state.labels[i], fontSize, state.textColor);
