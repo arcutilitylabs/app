@@ -34,6 +34,7 @@
     overflow: hidden;
   }
 
+  /* ヘッダー：上下幅スリム化 */
   header {
     height: 46px;
     background: linear-gradient(90deg, #0b111e 0%, #152238 100%);
@@ -61,6 +62,7 @@
     align-items: center;
     justify-content: center;
     box-shadow: 0 0 8px rgba(0, 210, 255, 0.4);
+    flex-shrink: 0;
   }
 
   .brand-logo::after {
@@ -68,8 +70,8 @@
     width: 9px;
     height: 4px;
     border-bottom: 2px solid var(--accent-cyan);
-    border-radius: 0 0 8px 8px;
-    margin-top: 3px;
+    border-radius: 0 0 9px 9px;
+    margin-top: 2px;
   }
 
   .brand-title-wrap {
@@ -83,6 +85,7 @@
     font-weight: 600;
     letter-spacing: 0.5px;
     color: #fff;
+    white-space: nowrap;
   }
 
   .pro-badge {
@@ -101,6 +104,7 @@
     margin-left: 8px;
     padding-left: 8px;
     border-left: 1px solid var(--border-color);
+    white-space: nowrap;
   }
 
   .export-group {
@@ -108,6 +112,7 @@
     align-items: center;
     gap: 6px;
     position: relative;
+    flex-shrink: 0;
   }
 
   .help-wrap {
@@ -144,12 +149,12 @@
     position: absolute;
     top: calc(100% + 10px);
     right: 0;
-    width: 310px;
+    width: 320px;
     background: #0f172a;
     border: 1px solid var(--border-color);
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
     border-radius: 8px;
-    padding: 12px;
+    padding: 14px;
     z-index: 1000;
     font-size: 11px;
     line-height: 1.6;
@@ -170,7 +175,7 @@
   }
 
   .help-item {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 
   .help-item:last-child {
@@ -191,11 +196,12 @@
     color: var(--accent-cyan);
   }
 
+  /* ボタンサイズをスリム化 */
   .btn {
     background: var(--panel-bg);
     color: var(--text-main);
     border: 1px solid var(--border-color);
-    padding: 5px 10px;
+    padding: 5px 11px;
     border-radius: 5px;
     font-size: 12px;
     cursor: pointer;
@@ -216,7 +222,7 @@
     border: none;
     color: #fff;
     font-weight: 600;
-    box-shadow: 0 2px 8px rgba(0, 114, 255, 0.3);
+    box-shadow: 0 2px 10px rgba(0, 114, 255, 0.3);
   }
 
   .btn-primary:hover {
@@ -250,6 +256,7 @@
     flex-shrink: 0;
   }
 
+  /* デザイン確認用背景バー（01直上） */
   .bg-select-bar {
     display: flex;
     align-items: center;
@@ -257,7 +264,7 @@
     background: rgba(11, 17, 30, 0.6);
     border: 1px solid var(--border-color);
     border-radius: 6px;
-    padding: 8px 12px;
+    padding: 7px 10px;
     flex-shrink: 0;
   }
 
@@ -714,7 +721,7 @@
     user-select: none;
   }
 
-  /* スマートフォン・小型端末向けレスポンシブ（常時プレビュー固定） */
+  /* スマートフォン・小型端末向けレスポンシブ（常時上部プレビュー固定） */
   @media (max-width: 860px) {
     body {
       height: 100vh;
@@ -766,6 +773,7 @@
     .btn-text-full {
       display: none;
     }
+
     .btn-text-short {
       display: inline;
       font-weight: 600;
@@ -780,8 +788,8 @@
     .preview-area {
       flex: none;
       width: 100%;
-      height: 240px;
-      padding: 8px;
+      height: 236px;
+      padding: 6px;
       border-bottom: 1px solid var(--border-color);
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
       z-index: 10;
@@ -870,12 +878,12 @@
 
 <div class="workspace">
   <aside class="sidebar">
-    <!-- デザイン確認用背景設定（01の直上・スクロール連動） -->
+    <!-- デザイン確認用背景バー（01直上・スクロール連動） -->
     <div class="bg-select-bar">
-      <span class="bg-select-label">デザイン確認用背景設定：</span>
+      <span class="bg-select-label">デザイン確認用背景：</span>
       <div class="btn-toggle-group">
-        <button class="mini-btn active" id="bg-btn-white" onclick="setPreviewBg('bg-white', this)">ホワイト</button>
-        <button class="mini-btn" id="bg-btn-dark" onclick="setPreviewBg('bg-dark', this)">ブラック</button>
+        <button class="mini-btn active" id="bg-btn-white" onclick="setPreviewBg('bg-white')">ホワイト</button>
+        <button class="mini-btn" id="bg-btn-dark" onclick="setPreviewBg('bg-dark')">ブラック</button>
       </div>
     </div>
 
@@ -1295,13 +1303,6 @@
     }, 1500);
   }
 
-  function setPreviewBg(bgClass, btn) {
-    const card = document.getElementById('canvas-card');
-    card.className = 'canvas-card ' + bgClass;
-    document.getElementById('bg-btn-white').classList.toggle('active', bgClass === 'bg-white');
-    document.getElementById('bg-btn-dark').classList.toggle('active', bgClass === 'bg-dark');
-  }
-
   function hexToHsl(hex) {
     let r = parseInt(hex.slice(1, 3), 16) / 255;
     let g = parseInt(hex.slice(3, 5), 16) / 255;
@@ -1477,6 +1478,13 @@
       div.innerHTML = `<span>${p.name}</span><div class="swatches">${swatches}</div>`;
       container.appendChild(div);
     });
+  }
+
+  function setPreviewBg(bgClass) {
+    const card = document.getElementById('canvas-card');
+    card.className = 'canvas-card ' + bgClass;
+    document.getElementById('bg-btn-white').classList.toggle('active', bgClass === 'bg-white');
+    document.getElementById('bg-btn-dark').classList.toggle('active', bgClass === 'bg-dark');
   }
 
   function renderCenterNodeUI() {
