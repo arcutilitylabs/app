@@ -31,12 +31,13 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
+    height: 100dvh;
     overflow: hidden;
   }
 
-  /* ヘッダー：上下幅スリム化 */
+  /* ヘッダー：上下幅を抑えたスリム設計 */
   header {
-    height: 46px;
+    min-height: 44px;
     background: linear-gradient(90deg, #0b111e 0%, #152238 100%);
     border-bottom: 1px solid var(--border-color);
     display: flex;
@@ -44,46 +45,47 @@
     justify-content: space-between;
     padding: 0 16px;
     flex-shrink: 0;
+    z-index: 100;
   }
 
   .brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
 
   .brand-logo {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     border: 2px solid var(--accent-cyan);
     border-radius: 50%;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 8px rgba(0, 210, 255, 0.4);
+    box-shadow: 0 0 6px rgba(0, 210, 255, 0.4);
     flex-shrink: 0;
   }
 
   .brand-logo::after {
     content: '';
-    width: 9px;
+    width: 8px;
     height: 4px;
     border-bottom: 2px solid var(--accent-cyan);
-    border-radius: 0 0 9px 9px;
+    border-radius: 0 0 8px 8px;
     margin-top: 2px;
   }
 
   .brand-title-wrap {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
 
   .brand-title {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
     color: #fff;
     white-space: nowrap;
   }
@@ -91,28 +93,28 @@
   .pro-badge {
     background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
     color: #000;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 800;
-    padding: 2px 6px;
-    border-radius: 4px;
+    padding: 1px 5px;
+    border-radius: 3px;
     letter-spacing: 0.5px;
   }
 
   .brand-sub {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--accent-cyan);
-    margin-left: 8px;
-    padding-left: 8px;
+    margin-left: 6px;
+    padding-left: 6px;
     border-left: 1px solid var(--border-color);
     white-space: nowrap;
   }
 
+  /* 出力ボタングループ：1行集約型 */
   .export-group {
     display: flex;
     align-items: center;
     gap: 6px;
     position: relative;
-    flex-shrink: 0;
   }
 
   .help-wrap {
@@ -128,7 +130,7 @@
     background: var(--panel-bg);
     border: 1px solid var(--border-color);
     color: var(--accent-cyan);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     cursor: pointer;
     display: flex;
@@ -141,23 +143,22 @@
   .btn-help:hover {
     border-color: var(--accent-cyan);
     background: rgba(0, 210, 255, 0.12);
-    box-shadow: 0 0 8px rgba(0, 210, 255, 0.3);
   }
 
   .help-popover {
     display: none;
     position: absolute;
-    top: calc(100% + 10px);
+    top: calc(100% + 8px);
     right: 0;
-    width: 320px;
+    width: 300px;
     background: #0f172a;
     border: 1px solid var(--border-color);
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
     border-radius: 8px;
-    padding: 14px;
+    padding: 12px;
     z-index: 1000;
     font-size: 11px;
-    line-height: 1.6;
+    line-height: 1.5;
     color: var(--text-main);
   }
 
@@ -166,16 +167,16 @@
   }
 
   .help-popover-title {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     color: var(--accent-cyan);
-    margin-bottom: 8px;
-    padding-bottom: 6px;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
     border-bottom: 1px solid var(--border-color);
   }
 
   .help-item {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
   .help-item:last-child {
@@ -185,7 +186,7 @@
   .help-item-name {
     font-weight: 700;
     color: #fff;
-    margin-bottom: 2px;
+    margin-bottom: 1px;
   }
 
   .help-item-desc {
@@ -196,19 +197,18 @@
     color: var(--accent-cyan);
   }
 
-  /* ボタンサイズをスリム化 */
   .btn {
     background: var(--panel-bg);
     color: var(--text-main);
     border: 1px solid var(--border-color);
-    padding: 5px 11px;
+    padding: 5px 10px;
     border-radius: 5px;
-    font-size: 12px;
+    font-size: 11.5px;
     cursor: pointer;
     transition: all 0.2s;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
     white-space: nowrap;
   }
 
@@ -222,20 +222,10 @@
     border: none;
     color: #fff;
     font-weight: 600;
-    box-shadow: 0 2px 10px rgba(0, 114, 255, 0.3);
   }
 
   .btn-primary:hover {
     opacity: 0.92;
-    transform: translateY(-1px);
-  }
-
-  .btn-text-full {
-    display: inline;
-  }
-
-  .btn-text-short {
-    display: none;
   }
 
   .workspace {
@@ -244,48 +234,49 @@
     overflow: hidden;
   }
 
+  /* サイドバー */
   .sidebar {
     width: 380px;
     background-color: var(--panel-bg);
     border-right: 1px solid var(--border-color);
     overflow-y: auto;
-    padding: 14px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
     flex-shrink: 0;
   }
 
-  /* デザイン確認用背景バー（01直上） */
-  .bg-select-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  /* 背景設定ボックス（サイドバー最上部） */
+  .bg-setting-box {
     background: rgba(11, 17, 30, 0.6);
     border: 1px solid var(--border-color);
     border-radius: 6px;
-    padding: 7px 10px;
-    flex-shrink: 0;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
   }
 
-  .bg-select-label {
+  .bg-setting-label {
     font-size: 11px;
     color: var(--text-muted);
-    letter-spacing: 0.3px;
+    white-space: nowrap;
   }
 
   .section-box {
     background: rgba(11, 17, 30, 0.5);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    padding: 14px;
+    padding: 12px;
   }
 
   .section-label {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--accent-cyan);
     letter-spacing: 0.8px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -294,16 +285,16 @@
   .mode-list-vertical {
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 6px;
   }
 
   .mode-btn {
     background: var(--bg-dark);
     border: 1px solid var(--border-color);
     color: var(--text-muted);
-    padding: 10px 12px;
-    border-radius: 6px;
-    font-size: 12px;
+    padding: 8px 10px;
+    border-radius: 5px;
+    font-size: 11.5px;
     cursor: pointer;
     text-align: left;
     transition: all 0.15s;
@@ -320,7 +311,7 @@
   }
 
   .control-row {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
   .control-row:last-child {
@@ -330,8 +321,8 @@
   .control-header {
     display: flex;
     justify-content: space-between;
-    font-size: 12px;
-    margin-bottom: 5px;
+    font-size: 11px;
+    margin-bottom: 4px;
     color: var(--text-main);
   }
 
@@ -344,7 +335,7 @@
     width: 100%;
     accent-color: var(--accent-cyan);
     cursor: pointer;
-    height: 5px;
+    height: 4px;
     background: var(--bg-dark);
     border-radius: 4px;
   }
@@ -354,9 +345,9 @@
     background: var(--bg-dark);
     border: 1px solid var(--border-color);
     color: var(--text-main);
-    padding: 7px 10px;
+    padding: 6px 8px;
     border-radius: 4px;
-    font-size: 12px;
+    font-size: 11.5px;
     outline: none;
     cursor: pointer;
   }
@@ -370,15 +361,15 @@
     border: 1px solid var(--border-color);
     border-left: 3px solid var(--accent-cyan);
     border-radius: 6px;
-    padding: 12px;
-    margin-top: 14px;
+    padding: 10px;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
 
   .sub-group-header {
-    font-size: 11px;
+    font-size: 10.5px;
     color: var(--accent-cyan);
     letter-spacing: 0.5px;
     font-weight: 600;
@@ -393,11 +384,12 @@
     background: var(--bg-dark);
     border: 1px solid var(--border-color);
     color: var(--text-muted);
-    padding: 4px 10px;
+    padding: 4px 8px;
     border-radius: 4px;
-    font-size: 11px;
+    font-size: 10.5px;
     cursor: pointer;
     transition: all 0.2s;
+    white-space: nowrap;
   }
 
   .mini-btn.active {
@@ -410,8 +402,8 @@
   .palette-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-bottom: 12px;
+    gap: 6px;
+    margin-bottom: 10px;
   }
 
   .palette-item {
@@ -420,10 +412,10 @@
     justify-content: space-between;
     background: var(--bg-dark);
     border: 1px solid var(--border-color);
-    padding: 7px 10px;
-    border-radius: 6px;
+    padding: 6px 8px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 11.5px;
   }
 
   .palette-item.active {
@@ -433,13 +425,13 @@
 
   .swatches {
     display: flex;
-    gap: 4px;
+    gap: 3px;
   }
 
   .swatch {
-    width: 14px;
-    height: 14px;
-    border-radius: 3px;
+    width: 13px;
+    height: 13px;
+    border-radius: 2px;
   }
 
   .custom-palette-row {
@@ -448,22 +440,22 @@
     justify-content: space-between;
     background: var(--bg-dark);
     border: 1px dashed var(--border-color);
-    padding: 7px 10px;
-    border-radius: 6px;
-    font-size: 12px;
+    padding: 6px 8px;
+    border-radius: 5px;
+    font-size: 11px;
   }
 
   .custom-picker-wrap {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
 
   .custom-picker-wrap input[type="color"] {
     -webkit-appearance: none;
     border: 1px solid var(--border-color);
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     border-radius: 4px;
     cursor: pointer;
     background: none;
@@ -476,26 +468,26 @@
 
   .custom-picker-wrap input[type="color"]::-webkit-color-swatch {
     border: none;
-    border-radius: 3px;
+    border-radius: 2px;
   }
 
   .mode-toggle-bar {
     display: flex;
     background: var(--bg-dark);
-    padding: 3px;
-    border-radius: 6px;
+    padding: 2px;
+    border-radius: 5px;
     border: 1px solid var(--border-color);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
   .toggle-option {
     flex: 1;
     text-align: center;
-    font-size: 11px;
-    padding: 5px 0;
+    font-size: 10.5px;
+    padding: 4px 0;
     color: var(--text-muted);
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 3px;
     transition: all 0.15s;
   }
 
@@ -509,11 +501,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .bulk-toggle-link {
-    font-size: 11px;
+    font-size: 10.5px;
     color: var(--accent-cyan);
     cursor: pointer;
     text-decoration: underline;
@@ -523,14 +515,14 @@
     display: none;
     background: var(--bg-dark);
     border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 10px;
-    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 8px;
+    margin-bottom: 8px;
   }
 
   .bulk-box textarea {
     width: 100%;
-    height: 70px;
+    height: 60px;
     background: rgba(11, 17, 30, 0.8);
     border: 1px solid var(--border-color);
     color: #fff;
@@ -556,19 +548,19 @@
     background: rgba(11, 17, 30, 0.8);
     border: 1px solid var(--border-color);
     border-left: 3px solid var(--accent-cyan);
-    border-radius: 6px;
-    padding: 10px;
-    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 8px;
+    margin-bottom: 8px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
   }
 
   .center-node-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 11px;
+    font-size: 10.5px;
     color: var(--accent-cyan);
   }
 
@@ -576,7 +568,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: 6px;
     padding-top: 4px;
     border-top: 1px dashed var(--border-color);
   }
@@ -584,8 +576,8 @@
   .center-node-size-wrap {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 11px;
+    gap: 4px;
+    font-size: 10.5px;
     color: var(--text-muted);
     flex: 1;
   }
@@ -593,8 +585,8 @@
   .labels-container {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    max-height: 220px;
+    gap: 5px;
+    max-height: 200px;
     overflow-y: auto;
     padding-right: 4px;
   }
@@ -602,14 +594,14 @@
   .label-row {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
   }
 
   .label-index {
-    width: 24px;
-    height: 24px;
-    border-radius: 4px;
-    font-size: 11px;
+    width: 22px;
+    height: 22px;
+    border-radius: 3px;
+    font-size: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -641,9 +633,9 @@
     background: var(--bg-dark);
     border: 1px solid var(--border-color);
     color: #fff;
-    padding: 5px 8px;
+    padding: 4px 6px;
     border-radius: 4px;
-    font-size: 12px;
+    font-size: 11.5px;
   }
 
   .label-input:focus {
@@ -652,13 +644,13 @@
   }
 
   .label-val-input {
-    width: 52px;
+    width: 46px;
     background: var(--bg-dark);
     border: 1px solid var(--border-color);
     color: var(--accent-cyan);
-    padding: 5px 4px;
+    padding: 4px;
     border-radius: 4px;
-    font-size: 12px;
+    font-size: 11px;
     text-align: right;
     font-family: monospace;
     outline: none;
@@ -671,18 +663,18 @@
   .storage-action-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 6px;
+    gap: 5px;
   }
 
   .storage-action-grid .mini-btn {
-    padding: 7px 0;
+    padding: 6px 0;
     text-align: center;
   }
 
+  /* プレビュー表示エリア */
   .preview-area {
     flex: 1;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
@@ -691,11 +683,14 @@
       radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 24px 24px;
     background-position: 0 0, 12px 12px;
+    padding: 16px;
   }
 
   .canvas-card {
-    width: 560px;
-    height: 560px;
+    width: 520px;
+    height: 520px;
+    max-width: 85vh;
+    max-height: 85vh;
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -721,31 +716,19 @@
     user-select: none;
   }
 
-  /* スマートフォン・小型端末向けレスポンシブ（常時上部プレビュー固定） */
+  /* スマートフォン・小型端末向けレスポンシブ最適化 */
   @media (max-width: 860px) {
-    body {
-      height: 100vh;
-      overflow: hidden;
-    }
-
     header {
-      height: 42px;
-      padding: 0 10px;
-      flex-wrap: nowrap;
+      padding: 6px 10px;
+      flex-direction: column;
       gap: 6px;
+      align-items: stretch;
+      min-height: auto;
     }
 
     .brand {
-      gap: 6px;
-    }
-
-    .brand-logo {
-      width: 18px;
-      height: 18px;
-    }
-
-    .brand-title {
-      font-size: 13px;
+      justify-content: space-between;
+      width: 100%;
     }
 
     .brand-sub {
@@ -753,71 +736,65 @@
     }
 
     .export-group {
+      width: 100%;
+      justify-content: space-between;
       gap: 4px;
-      flex-shrink: 0;
     }
 
-    .btn {
-      padding: 4px 7px;
-      font-size: 11px;
+    .export-group .btn {
+      flex: 1;
+      padding: 5px 3px;
+      font-size: 10.5px;
+      justify-content: center;
       gap: 2px;
-      border-radius: 4px;
     }
 
     .btn-help {
-      width: 22px;
-      height: 22px;
+      width: 25px;
+      height: 25px;
       font-size: 11px;
     }
 
-    .btn-text-full {
-      display: none;
-    }
-
-    .btn-text-short {
-      display: inline;
-      font-weight: 600;
+    .help-popover {
+      left: 0;
+      right: auto;
+      width: calc(100vw - 20px);
     }
 
     .workspace {
       flex-direction: column;
-      height: calc(100vh - 42px);
+      height: calc(100vh - 72px);
+      height: calc(100dvh - 72px);
       overflow: hidden;
     }
 
+    /* プレビューエリアを上部に固定配置 */
     .preview-area {
+      order: 1;
       flex: none;
       width: 100%;
-      height: 236px;
-      padding: 6px;
+      padding: 8px 12px;
       border-bottom: 1px solid var(--border-color);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      background-color: var(--bg-dark);
       z-index: 10;
-      background-size: 16px 16px;
     }
 
     .canvas-card {
-      width: 224px;
-      height: 224px;
+      width: min(205px, 28vh);
+      height: min(205px, 28vh);
       border-radius: 8px;
     }
 
+    /* サイドバーを下部でスクロール可能に設計 */
     .sidebar {
+      order: 2;
       flex: 1;
       width: 100%;
       border-right: none;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      padding: 12px;
-      gap: 12px;
-    }
-
-    .help-popover {
-      position: fixed;
-      top: 46px;
-      left: 10px;
-      right: 10px;
-      width: auto;
+      padding: 10px;
+      gap: 10px;
     }
   }
 </style>
@@ -826,13 +803,16 @@
 
 <header>
   <div class="brand">
-    <div class="brand-logo"></div>
-    <div class="brand-title-wrap">
-      <span class="brand-title">Arc Diagram Generator</span>
-      <span class="pro-badge">PRO</span>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <div class="brand-logo"></div>
+      <div class="brand-title-wrap">
+        <span class="brand-title">Arc Diagram Generator</span>
+        <span class="pro-badge">PRO</span>
+      </div>
     </div>
     <span class="brand-sub">Arc Utility Labs</span>
   </div>
+
   <div class="export-group">
     <div class="help-wrap">
       <button class="btn-help" id="btn-help" onclick="toggleHelp(event)" title="出力形式の選び方ガイド">?</button>
@@ -841,53 +821,44 @@
         <div class="help-item">
           <div class="help-item-name">クリップボードにコピー</div>
           <div class="help-item-desc">
-            ・<span>Canva</span>：貼り付け後に色調調整が可能。<br>
-            ・<span>PowerPoint</span>：透過画像として即座に貼り付け。
+            ・<span>Canva</span>：貼り付け後に色調調整が可能。手早くスライドへ組み込む際に最適。<br>
+            ・<span>PowerPoint</span>：透過画像として高速に貼り付け。
           </div>
         </div>
         <div class="help-item">
           <div class="help-item-name">SVGを保存</div>
           <div class="help-item-desc">
-            ・<span>PowerPoint</span>：挿入後に右クリック「グループ解除」でパーツ・文字の完全分解が可能。<br>
-            ・<span>Canva</span>：高解像度ベクター素材として利用可能。
+            ・<span>PowerPoint</span>：挿入後に「グループ解除」を実行することで各図形や文字に完全分解して自由編集が可能。<br>
+            ・<span>Canva</span>：高解像度ベクター素材としてアップロード可能。
           </div>
         </div>
         <div class="help-item">
           <div class="help-item-name">透過PNGを保存</div>
           <div class="help-item-desc">
-            ・<span>全ツール共通</span>：1200×1200pxの高解像度透過画像として保存。
+            ・<span>全ツール共通</span>：背景透過画像（1200×1200px）として手元に保管・共有するバックアップ用。
           </div>
         </div>
       </div>
     </div>
 
-    <button class="btn btn-primary" id="btn-copy" onclick="copyPNGToClipboard()">
-      <span class="btn-text-full">クリップボードにコピー</span>
-      <span class="btn-text-short">コピー</span>
-    </button>
-    <button class="btn" onclick="downloadSVG()">
-      <span class="btn-text-full">SVGを保存</span>
-      <span class="btn-text-short">SVG</span>
-    </button>
-    <button class="btn" onclick="downloadPNG()">
-      <span class="btn-text-full">透過PNGを保存</span>
-      <span class="btn-text-short">PNG</span>
-    </button>
+    <button class="btn btn-primary" id="btn-copy" onclick="copyPNGToClipboard()">クリップボードにコピー</button>
+    <button class="btn" onclick="downloadSVG()">SVGを保存</button>
+    <button class="btn" onclick="downloadPNG()">透過PNGを保存</button>
   </div>
 </header>
 
 <div class="workspace">
   <aside class="sidebar">
-    <!-- デザイン確認用背景バー（01直上・スクロール連動） -->
-    <div class="bg-select-bar">
-      <span class="bg-select-label">デザイン確認用背景：</span>
+    <!-- デザイン確認用背景設定（最上部に配置） -->
+    <div class="bg-setting-box">
+      <span class="bg-setting-label">デザイン確認用背景設定：</span>
       <div class="btn-toggle-group">
-        <button class="mini-btn active" id="bg-btn-white" onclick="setPreviewBg('bg-white')">ホワイト</button>
-        <button class="mini-btn" id="bg-btn-dark" onclick="setPreviewBg('bg-dark')">ブラック</button>
+        <button class="mini-btn active" id="btn-bg-white" onclick="setPreviewBg('bg-white')">ホワイト</button>
+        <button class="mini-btn" id="btn-bg-dark" onclick="setPreviewBg('bg-dark')">ブラック</button>
       </div>
     </div>
 
-    <!-- 01: モード選択（縦並び） -->
+    <!-- 01: モード選択 -->
     <div class="section-box">
       <div class="section-label"><span>01 / DIAGRAM MODE</span></div>
       <div class="mode-list-vertical">
@@ -999,7 +970,7 @@
         </div>
 
         <!-- レーダー用：文字位置 -->
-        <div class="control-row" id="row-label-offset" style="display:none; margin-bottom:0; margin-top:12px;">
+        <div class="control-row" id="row-label-offset" style="display:none; margin-bottom:0; margin-top:10px;">
           <div class="control-header">
             <span>文字位置</span>
             <span class="control-val" id="val-label-offset">32px</span>
@@ -1015,18 +986,18 @@
       <div class="palette-list" id="palette-container"></div>
 
       <div class="custom-palette-row">
-        <span>カスタム基準色（1色から自動生成）</span>
+        <span>カスタム基準色（自動生成）</span>
         <div class="custom-picker-wrap">
           <input type="color" id="base-color-picker" value="#00d2ff" onchange="generateCustomPalette(this.value)">
         </div>
       </div>
     </div>
 
-    <!-- 04: テキスト＆ウェイト編集（中心文字UI統合） -->
+    <!-- 04: テキスト＆ウェイト編集 -->
     <div class="section-box">
       <div class="section-label">
         <span>04 / TEXT LABELS & WEIGHTS</span>
-        <span style="font-size:11px; color:var(--text-muted);">改行は「/」を入力</span>
+        <span style="font-size:10px; color:var(--text-muted);">改行は「/」</span>
       </div>
 
       <div class="mode-toggle-bar">
@@ -1054,7 +1025,7 @@
       <div class="labels-container" id="labels-list"></div>
     </div>
 
-    <!-- 05: 入力・設定の保存と読込（JSONファイル連動） -->
+    <!-- 05: 入力・設定の保存と読込 -->
     <div class="section-box">
       <div class="section-label"><span>05 / CONFIG FILE & PRESETS</span></div>
       <div class="storage-action-grid">
@@ -1480,13 +1451,6 @@
     });
   }
 
-  function setPreviewBg(bgClass) {
-    const card = document.getElementById('canvas-card');
-    card.className = 'canvas-card ' + bgClass;
-    document.getElementById('bg-btn-white').classList.toggle('active', bgClass === 'bg-white');
-    document.getElementById('bg-btn-dark').classList.toggle('active', bgClass === 'bg-dark');
-  }
-
   function renderCenterNodeUI() {
     const container = document.getElementById('center-node-container');
     container.innerHTML = '';
@@ -1748,6 +1712,13 @@
 
     renderLabelInputs();
     render();
+  }
+
+  function setPreviewBg(bgClass) {
+    const card = document.getElementById('canvas-card');
+    card.className = 'canvas-card ' + bgClass;
+    document.getElementById('btn-bg-white').classList.toggle('active', bgClass === 'bg-white');
+    document.getElementById('btn-bg-dark').classList.toggle('active', bgClass === 'bg-dark');
   }
 
   function polarToCartesian(cx, cy, r, angleDeg) {
@@ -2141,17 +2112,11 @@
         if (!blob) return;
         try {
           await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-          const fullSpan = btn.querySelector('.btn-text-full');
-          const shortSpan = btn.querySelector('.btn-text-short');
-          const origFull = fullSpan.textContent;
-          const origShort = shortSpan.textContent;
-
-          fullSpan.textContent = 'コピー完了！';
-          shortSpan.textContent = '完了！';
+          const originalText = btn.textContent;
+          btn.textContent = 'コピー完了！';
           btn.style.borderColor = 'var(--accent-cyan)';
           setTimeout(() => {
-            fullSpan.textContent = origFull;
-            shortSpan.textContent = origShort;
+            btn.textContent = originalText;
             btn.style.borderColor = 'var(--border-color)';
           }, 2000);
         } catch (err) {
