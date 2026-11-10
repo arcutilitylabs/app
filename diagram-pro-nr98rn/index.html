@@ -780,7 +780,7 @@
     </div>
     <span class="brand-sub">Arc Utility Labs</span>
   </div>
-  <div class="export-group">
+ <div class="export-group">
     <div class="help-wrap">
       <button class="btn-help" id="btn-help" onclick="toggleHelp(event)" title="出力形式の選び方ガイド">?</button>
       <div class="help-popover" id="help-popover">
@@ -788,25 +788,39 @@
         <div class="help-item">
           <div class="help-item-name">クリップボードにコピー</div>
           <div class="help-item-desc">
-            ・<span>Canva</span>：貼り付け後に色調（全体のカラー系統）の変更が可能。手早くスライドへ組み込む際に最適。<br>
-            ・<span>PowerPoint</span>：透過画像として高速に貼り付け（パーツ分解は不可）。
+            ・<span>Canva</span>：貼り付け後に色調調整が可能。<br>
+            ・<span>PowerPoint</span>：透過画像として即座に貼り付け。
           </div>
         </div>
         <div class="help-item">
           <div class="help-item-name">SVGを保存</div>
           <div class="help-item-desc">
-            ・<span>PowerPoint</span>：挿入後に右クリック「グループ解除」を実行することで、各図形パーツや文字に完全分解して自由編集が可能。<br>
-            ・<span>Canva</span>：高解像度ベクター素材としてアップロード可能。
+            ・<span>PowerPoint</span>：挿入後に右クリック「グループ解除」でパーツ・文字の完全分解が可能。<br>
+            ・<span>Canva</span>：高解像度ベクター素材として利用可能。
           </div>
         </div>
         <div class="help-item">
           <div class="help-item-name">透過PNGを保存</div>
           <div class="help-item-desc">
-            ・<span>全ツール共通</span>：背景が透過された画像ファイル（1200×1200px）として手元に保管・共有するバックアップ用。
+            ・<span>全ツール共通</span>：1200×1200pxの高解像度透過画像として保存。
           </div>
         </div>
       </div>
     </div>
+
+    <button class="btn btn-primary" id="btn-copy" onclick="copyPNGToClipboard()">
+      <span class="btn-text-full">クリップボードにコピー</span>
+      <span class="btn-text-short">コピー</span>
+    </button>
+    <button class="btn" onclick="downloadSVG()">
+      <span class="btn-text-full">SVGを保存</span>
+      <span class="btn-text-short">SVG</span>
+    </button>
+    <button class="btn" onclick="downloadPNG()">
+      <span class="btn-text-full">透過PNGを保存</span>
+      <span class="btn-text-short">PNG</span>
+    </button>
+  </div>
 
     <button class="btn btn-primary" id="btn-copy" onclick="copyPNGToClipboard()">クリップボードにコピー</button>
     <button class="btn" onclick="downloadSVG()">SVGを保存</button>
