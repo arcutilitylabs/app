@@ -5,7 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Arc Diagram Generator Pro | Arc Utility Labs</title>
 <style>
-/* ヘッダーの上下幅スリム化 */
+  :root {
+    --bg-dark: #0b111e;
+    --panel-bg: #131c2e;
+    --border-color: #23314d;
+    --accent-cyan: #00d2ff;
+    --accent-blue: #0072ff;
+    --text-main: #e2e8f0;
+    --text-muted: #8b9bb4;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body, input, button, select, textarea {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Segoe UI', 'Meiryo', sans-serif;
+  }
+
+  body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
   header {
     height: 46px;
     background: linear-gradient(90deg, #0b111e 0%, #152238 100%);
@@ -17,20 +45,75 @@
     flex-shrink: 0;
   }
 
-  /* ボタン全体のサイズ感をすっきり調整 */
-  .btn {
-    background: var(--panel-bg);
-    color: var(--text-main);
-    border: 1px solid var(--border-color);
-    padding: 5px 11px;
-    border-radius: 5px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s;
+  .brand {
     display: flex;
     align-items: center;
-    gap: 5px;
-    white-space: nowrap;
+    gap: 10px;
+  }
+
+  .brand-logo {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--accent-cyan);
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 8px rgba(0, 210, 255, 0.4);
+  }
+
+  .brand-logo::after {
+    content: '';
+    width: 9px;
+    height: 4px;
+    border-bottom: 2px solid var(--accent-cyan);
+    border-radius: 0 0 8px 8px;
+    margin-top: 3px;
+  }
+
+  .brand-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .brand-title {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #fff;
+  }
+
+  .pro-badge {
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+    color: #000;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .brand-sub {
+    font-size: 12px;
+    color: var(--accent-cyan);
+    margin-left: 8px;
+    padding-left: 8px;
+    border-left: 1px solid var(--border-color);
+  }
+
+  .export-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+  }
+
+  .help-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
   }
 
   .btn-help {
@@ -50,15 +133,123 @@
     flex-shrink: 0;
   }
 
-  /* PC表示時のボタンテキスト切り替え */
+  .btn-help:hover {
+    border-color: var(--accent-cyan);
+    background: rgba(0, 210, 255, 0.12);
+    box-shadow: 0 0 8px rgba(0, 210, 255, 0.3);
+  }
+
+  .help-popover {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 310px;
+    background: #0f172a;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
+    padding: 12px;
+    z-index: 1000;
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--text-main);
+  }
+
+  .help-popover.active {
+    display: block;
+  }
+
+  .help-popover-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .help-item {
+    margin-bottom: 8px;
+  }
+
+  .help-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .help-item-name {
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+
+  .help-item-desc {
+    color: var(--text-muted);
+  }
+
+  .help-item-desc span {
+    color: var(--accent-cyan);
+  }
+
+  .btn {
+    background: var(--panel-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+
+  .btn:hover {
+    border-color: var(--accent-cyan);
+    color: #fff;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 114, 255, 0.3);
+  }
+
+  .btn-primary:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+  }
+
   .btn-text-full {
     display: inline;
   }
+
   .btn-text-short {
     display: none;
   }
 
-  /* 01直上の背景切り替えバー */
+  .workspace {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .sidebar {
+    width: 380px;
+    background-color: var(--panel-bg);
+    border-right: 1px solid var(--border-color);
+    overflow-y: auto;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex-shrink: 0;
+  }
+
   .bg-select-bar {
     display: flex;
     align-items: center;
@@ -76,16 +267,460 @@
     letter-spacing: 0.3px;
   }
 
-  /* ===================================================
-     スマートフォン・小型端末向けレスポンシブ（常時プレビュー固定）
-  =================================================== */
+  .section-box {
+    background: rgba(11, 17, 30, 0.5);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 14px;
+  }
+
+  .section-label {
+    font-size: 12px;
+    color: var(--accent-cyan);
+    letter-spacing: 0.8px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .mode-list-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .mode-btn {
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .mode-btn.active {
+    background: rgba(0, 210, 255, 0.12);
+    border-color: var(--accent-cyan);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .control-row {
+    margin-bottom: 12px;
+  }
+
+  .control-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .control-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: var(--text-main);
+  }
+
+  .control-val {
+    color: var(--accent-cyan);
+    font-family: monospace;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent-cyan);
+    cursor: pointer;
+    height: 5px;
+    background: var(--bg-dark);
+    border-radius: 4px;
+  }
+
+  .select-input {
+    width: 100%;
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 7px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .select-input:focus {
+    border-color: var(--accent-cyan);
+  }
+
+  .sub-group-box {
+    background: rgba(11, 17, 30, 0.7);
+    border: 1px solid var(--border-color);
+    border-left: 3px solid var(--accent-cyan);
+    border-radius: 6px;
+    padding: 12px;
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sub-group-header {
+    font-size: 11px;
+    color: var(--accent-cyan);
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+
+  .btn-toggle-group {
+    display: flex;
+    gap: 4px;
+  }
+
+  .mini-btn {
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .mini-btn.active {
+    background: var(--accent-cyan);
+    border-color: var(--accent-cyan);
+    color: #000;
+    font-weight: 600;
+  }
+
+  .palette-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .palette-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    padding: 7px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+
+  .palette-item.active {
+    border-color: var(--accent-cyan);
+    background: rgba(0, 210, 255, 0.08);
+  }
+
+  .swatches {
+    display: flex;
+    gap: 4px;
+  }
+
+  .swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+  }
+
+  .custom-palette-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-dark);
+    border: 1px dashed var(--border-color);
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+
+  .custom-picker-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .custom-picker-wrap input[type="color"] {
+    -webkit-appearance: none;
+    border: 1px solid var(--border-color);
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    background: none;
+    padding: 0;
+  }
+
+  .custom-picker-wrap input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+
+  .custom-picker-wrap input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 3px;
+  }
+
+  .mode-toggle-bar {
+    display: flex;
+    background: var(--bg-dark);
+    padding: 3px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 10px;
+  }
+
+  .toggle-option {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    padding: 5px 0;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+
+  .toggle-option.active {
+    background: rgba(0, 210, 255, 0.16);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .labels-header-sub {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .bulk-toggle-link {
+    font-size: 11px;
+    color: var(--accent-cyan);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .bulk-box {
+    display: none;
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .bulk-box textarea {
+    width: 100%;
+    height: 70px;
+    background: rgba(11, 17, 30, 0.8);
+    border: 1px solid var(--border-color);
+    color: #fff;
+    padding: 6px;
+    font-size: 11px;
+    border-radius: 4px;
+    resize: vertical;
+    outline: none;
+  }
+
+  .bulk-box textarea:focus {
+    border-color: var(--accent-cyan);
+  }
+
+  .bulk-action-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  .center-node-box {
+    background: rgba(11, 17, 30, 0.8);
+    border: 1px solid var(--border-color);
+    border-left: 3px solid var(--accent-cyan);
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .center-node-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--accent-cyan);
+  }
+
+  .center-node-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 4px;
+    border-top: 1px dashed var(--border-color);
+  }
+
+  .center-node-size-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+    flex: 1;
+  }
+
+  .labels-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 220px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+
+  .label-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .label-index {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    flex-shrink: 0;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.1s;
+  }
+
+  .label-index:hover {
+    transform: scale(1.08);
+  }
+
+  .label-index input[type="color"] {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+  }
+
+  .label-input {
+    flex: 1;
+    min-width: 0;
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    color: #fff;
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+
+  .label-input:focus {
+    outline: none;
+    border-color: var(--accent-cyan);
+  }
+
+  .label-val-input {
+    width: 52px;
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    color: var(--accent-cyan);
+    padding: 5px 4px;
+    border-radius: 4px;
+    font-size: 12px;
+    text-align: right;
+    font-family: monospace;
+    outline: none;
+  }
+
+  .label-val-input:focus {
+    border-color: var(--accent-cyan);
+  }
+
+  .storage-action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+  }
+
+  .storage-action-grid .mini-btn {
+    padding: 7px 0;
+    text-align: center;
+  }
+
+  .preview-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-image: 
+      radial-gradient(rgba(0, 210, 255, 0.07) 1px, transparent 1px),
+      radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: 0 0, 12px 12px;
+  }
+
+  .canvas-card {
+    width: 560px;
+    height: 560px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: background 0.2s;
+  }
+
+  .canvas-card.bg-white {
+    background: #ffffff;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+  }
+
+  .canvas-card.bg-dark {
+    background: #0f172a;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+    user-select: none;
+  }
+
+  /* スマートフォン・小型端末向けレスポンシブ（常時プレビュー固定） */
   @media (max-width: 860px) {
     body {
       height: 100vh;
       overflow: hidden;
     }
 
-    /* ヘッダー：極力スリムに1行化 */
     header {
       height: 42px;
       padding: 0 10px;
@@ -128,7 +763,6 @@
       font-size: 11px;
     }
 
-    /* スマホ時は短縮テキスト（コピー / SVG / PNG）を表示 */
     .btn-text-full {
       display: none;
     }
@@ -137,18 +771,16 @@
       font-weight: 600;
     }
 
-    /* ワークスペース：上下分割レイアウト */
     .workspace {
       flex-direction: column;
       height: calc(100vh - 42px);
       overflow: hidden;
     }
 
-    /* 上部：ダイアグラム常時固定プレビューエリア */
     .preview-area {
       flex: none;
       width: 100%;
-      height: 250px;
+      height: 240px;
       padding: 8px;
       border-bottom: 1px solid var(--border-color);
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
@@ -157,12 +789,11 @@
     }
 
     .canvas-card {
-      width: 234px;
-      height: 234px;
+      width: 224px;
+      height: 224px;
       border-radius: 8px;
     }
 
-    /* 下部：操作パネルスクロールエリア（画面残りを最大活用） */
     .sidebar {
       flex: 1;
       width: 100%;
@@ -173,10 +804,9 @@
       gap: 12px;
     }
 
-    /* ヘルプポップオーバーのスマホ位置調整 */
     .help-popover {
       position: fixed;
-      top: 48px;
+      top: 46px;
       left: 10px;
       right: 10px;
       width: auto;
@@ -195,7 +825,7 @@
     </div>
     <span class="brand-sub">Arc Utility Labs</span>
   </div>
- <div class="export-group">
+  <div class="export-group">
     <div class="help-wrap">
       <button class="btn-help" id="btn-help" onclick="toggleHelp(event)" title="出力形式の選び方ガイド">?</button>
       <div class="help-popover" id="help-popover">
@@ -236,25 +866,19 @@
       <span class="btn-text-short">PNG</span>
     </button>
   </div>
-
-    <button class="btn btn-primary" id="btn-copy" onclick="copyPNGToClipboard()">クリップボードにコピー</button>
-    <button class="btn" onclick="downloadSVG()">SVGを保存</button>
-    <button class="btn" onclick="downloadPNG()">透過PNGを保存</button>
-  </div>
 </header>
 
 <div class="workspace">
-<aside class="sidebar">
+  <aside class="sidebar">
     <!-- デザイン確認用背景設定（01の直上・スクロール連動） -->
     <div class="bg-select-bar">
-      <span class="bg-select-label">デザイン確認用背景：</span>
+      <span class="bg-select-label">デザイン確認用背景設定：</span>
       <div class="btn-toggle-group">
         <button class="mini-btn active" id="bg-btn-white" onclick="setPreviewBg('bg-white', this)">ホワイト</button>
         <button class="mini-btn" id="bg-btn-dark" onclick="setPreviewBg('bg-dark', this)">ブラック</button>
       </div>
     </div>
 
-  <aside class="sidebar">
     <!-- 01: モード選択（縦並び） -->
     <div class="section-box">
       <div class="section-label"><span>01 / DIAGRAM MODE</span></div>
@@ -438,12 +1062,6 @@
     <div class="canvas-card bg-white" id="canvas-card">
       <svg id="diagram-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg"></svg>
     </div>
-
-    <div class="preview-toolbar">
-      <span style="color:var(--text-muted); margin-right:4px;">背景サンプル（出力は常に透明）：</span>
-      <span class="bg-toggle active" onclick="setPreviewBg('bg-white', this)">白スライド</span>
-      <span class="bg-toggle" onclick="setPreviewBg('bg-dark', this)">ダークスライド</span>
-    </div>
   </main>
 </div>
 
@@ -488,8 +1106,6 @@
     satelliteLineWidth: 2,
     polygonLabelOffset: 32
   };
-
-  const STORAGE_KEY = 'arc_pro_diagram_state_v5';
 
   function init() {
     renderPalettes();
@@ -677,6 +1293,13 @@
       btn.textContent = origText;
       btn.style.borderColor = 'var(--border-color)';
     }, 1500);
+  }
+
+  function setPreviewBg(bgClass, btn) {
+    const card = document.getElementById('canvas-card');
+    card.className = 'canvas-card ' + bgClass;
+    document.getElementById('bg-btn-white').classList.toggle('active', bgClass === 'bg-white');
+    document.getElementById('bg-btn-dark').classList.toggle('active', bgClass === 'bg-dark');
   }
 
   function hexToHsl(hex) {
@@ -1119,13 +1742,6 @@
     render();
   }
 
-  function setPreviewBg(bgClass, btn) {
-    const card = document.getElementById('canvas-card');
-    card.className = 'canvas-card ' + bgClass;
-    document.getElementById('bg-btn-white').classList.toggle('active', bgClass === 'bg-white');
-    document.getElementById('bg-btn-dark').classList.toggle('active', bgClass === 'bg-dark');
-  }
-
   function polarToCartesian(cx, cy, r, angleDeg) {
     const rad = (angleDeg - 90) * Math.PI / 180.0;
     return {
@@ -1517,11 +2133,17 @@
         if (!blob) return;
         try {
           await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-          const originalText = btn.textContent;
-          btn.textContent = 'コピー完了！';
+          const fullSpan = btn.querySelector('.btn-text-full');
+          const shortSpan = btn.querySelector('.btn-text-short');
+          const origFull = fullSpan.textContent;
+          const origShort = shortSpan.textContent;
+
+          fullSpan.textContent = 'コピー完了！';
+          shortSpan.textContent = '完了！';
           btn.style.borderColor = 'var(--accent-cyan)';
           setTimeout(() => {
-            btn.textContent = originalText;
+            fullSpan.textContent = origFull;
+            shortSpan.textContent = origShort;
             btn.style.borderColor = 'var(--border-color)';
           }, 2000);
         } catch (err) {
