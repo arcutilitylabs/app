@@ -11,6 +11,7 @@
     --border-color: #23314d;
     --accent-cyan: #00d2ff;
     --accent-blue: #0072ff;
+    --accent-amber: #fbbf24;
     --text-main: #e2e8f0;
     --text-muted: #8b9bb4;
   }
@@ -51,7 +52,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 12px;
+    padding: 0 10px;
     flex-shrink: 0;
     z-index: 100;
   }
@@ -59,7 +60,7 @@
   .brand {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
 
   .brand-logo {
@@ -87,7 +88,7 @@
   .brand-title-wrap {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
   }
 
   .brand-title {
@@ -113,16 +114,142 @@
     display: none;
     font-size: 11px;
     color: var(--accent-cyan);
-    margin-left: 6px;
+    margin-left: 4px;
     padding-left: 6px;
     border-left: 1px solid var(--border-color);
     white-space: nowrap;
   }
 
+  /* ガイド表示切替ボタン */
+  .btn-guide-toggle {
+    background: rgba(19, 28, 46, 0.9);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: 4px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-guide-toggle:hover {
+    border-color: var(--accent-amber);
+    color: #fff;
+  }
+
+  .btn-guide-toggle.active {
+    background: rgba(251, 191, 36, 0.14);
+    border-color: var(--accent-amber);
+    color: var(--accent-amber);
+    box-shadow: 0 0 10px rgba(251, 191, 36, 0.2);
+  }
+
+  .guide-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    transition: all 0.2s;
+  }
+
+  .btn-guide-toggle.active .guide-dot {
+    background: var(--accent-amber);
+    box-shadow: 0 0 6px var(--accent-amber);
+  }
+
+  /* 右上出力グループ＆ヘルプ */
   .export-group {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
+    position: relative;
+  }
+
+  .help-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .btn-help {
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    color: var(--accent-cyan);
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .btn-help:hover {
+    border-color: var(--accent-cyan);
+    background: rgba(0, 210, 255, 0.12);
+  }
+
+  .help-popover {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: min(310px, 92vw);
+    background: #0f172a;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.75);
+    border-radius: 8px;
+    padding: 12px;
+    z-index: 1000;
+    font-size: 11px;
+    line-height: 1.55;
+    color: var(--text-main);
+  }
+
+  .help-popover.active {
+    display: block;
+  }
+
+  .help-popover-title {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .help-item {
+    margin-bottom: 9px;
+  }
+
+  .help-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .help-item-name {
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+
+  .help-item-desc {
+    color: var(--text-muted);
+  }
+
+  .help-item-desc span {
+    color: var(--accent-cyan);
+    font-weight: 600;
   }
 
   .btn {
@@ -173,7 +300,7 @@
     overflow: hidden;
   }
 
-  /* プレビューエリア（従来の約1.5倍サイズ：高さ300px / 最大42vh） */
+  /* プレビューエリア */
   .preview-area {
     flex: none;
     width: 100%;
@@ -240,12 +367,35 @@
     gap: 10px;
   }
 
+  /* インラインガイド説明ボックス（ガイドON時のみ表示） */
+  .guide-tip {
+    display: none;
+    background: rgba(251, 191, 36, 0.08);
+    border: 1px solid rgba(251, 191, 36, 0.28);
+    border-left: 3px solid var(--accent-amber);
+    color: #fef3c7;
+    font-size: 10.5px;
+    line-height: 1.45;
+    padding: 5px 8px;
+    border-radius: 4px;
+    margin-top: 5px;
+  }
+
+  body.show-guide .guide-tip {
+    display: block;
+  }
+
   /* 背景設定ボックス（サイドバー最上部） */
   .bg-setting-box {
     background: rgba(11, 17, 30, 0.6);
     border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 7px 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bg-setting-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -548,12 +698,22 @@
       padding: 0 16px;
     }
 
+    .brand {
+      gap: 8px;
+    }
+
     .brand-title {
       font-size: 13.5px;
     }
 
     .brand-sub {
       display: inline;
+    }
+
+    .btn-guide-toggle {
+      margin-left: 8px;
+      padding: 4px 10px;
+      font-size: 11px;
     }
 
     .btn-text-full {
@@ -564,9 +724,19 @@
       display: none;
     }
 
+    .export-group {
+      gap: 6px;
+    }
+
     .btn {
       padding: 4px 10px;
       font-size: 11.5px;
+    }
+
+    .btn-help {
+      width: 25px;
+      height: 25px;
+      font-size: 12px;
     }
 
     .workspace {
@@ -611,9 +781,38 @@
       <span class="free-badge">FREE</span>
     </div>
     <span class="brand-sub">Arc Utility Labs</span>
+    <button class="btn-guide-toggle" id="btn-guide-toggle" onclick="toggleGuideMode()" title="各操作項目の説明ガイドを表示／非表示">
+      <span class="guide-dot"></span>
+      <span>ガイド表示</span>
+    </button>
   </div>
 
   <div class="export-group">
+    <div class="help-wrap">
+      <button class="btn-help" id="btn-help" onclick="toggleHelp(event)" title="透過PNGの活用ガイド">?</button>
+      <div class="help-popover" id="help-popover">
+        <div class="help-popover-title">透過PNGの活用ガイド</div>
+        <div class="help-item">
+          <div class="help-item-name">1. 画像の仕様（高解像度・背景透過）</div>
+          <div class="help-item-desc">
+            <span>1200×1200px</span>の背景が透明なPNG画像として保存されます。白背景・黒背景・写真の上など場所を選ばず綺麗に重なります。
+          </div>
+        </div>
+        <div class="help-item">
+          <div class="help-item-name">2. スライドへの配置方法</div>
+          <div class="help-item-desc">
+            保存した画像を<span>PowerPoint</span>や<span>Canva</span>、Googleスライド等の編集画面へそのままドラッグ＆ドロップして配置できます。
+          </div>
+        </div>
+        <div class="help-item">
+          <div class="help-item-name">3. Canvaでの色調調整のヒント</div>
+          <div class="help-item-desc">
+            Canvaに配置した後、上部の<span>「メニュー」</span>から、スライド全体のトーンに合わせて色味や明るさを微調整することも可能です。
+          </div>
+        </div>
+      </div>
+    </div>
+
     <button class="btn btn-primary" onclick="downloadPNG()">
       <span class="btn-text-full">透過PNGを保存</span>
       <span class="btn-text-short">PNG</span>
@@ -633,11 +832,14 @@
   <aside class="sidebar">
     <!-- デザイン確認用背景設定 -->
     <div class="bg-setting-box">
-      <span class="bg-setting-label">デザイン確認用背景設定：</span>
-      <div class="btn-toggle-group">
-        <button class="mini-btn active" id="btn-bg-white" onclick="setPreviewBg('bg-white')">ホワイト</button>
-        <button class="mini-btn" id="btn-bg-dark" onclick="setPreviewBg('bg-dark')">ブラック</button>
+      <div class="bg-setting-row">
+        <span class="bg-setting-label">デザイン確認用背景設定：</span>
+        <div class="btn-toggle-group">
+          <button class="mini-btn active" id="btn-bg-white" onclick="setPreviewBg('bg-white')">ホワイト</button>
+          <button class="mini-btn" id="btn-bg-dark" onclick="setPreviewBg('bg-dark')">ブラック</button>
+        </div>
       </div>
+      <div class="guide-tip">作業中のプレビュー背景を白／黒で切り替えます。保存されるPNG画像の背景は常に「透明」になります。</div>
     </div>
 
     <!-- 01: モード選択 -->
@@ -657,6 +859,7 @@
           <span>レーダー</span><span style="font-size:10px; color:var(--text-muted);">多角形・多軸評価</span>
         </button>
       </div>
+      <div class="guide-tip" id="guide-mode">表現したい構造に合わせて4つの基本形から選択します。入力したテキストや配色はモードを切り替えても引き継がれます。</div>
     </div>
 
     <!-- 02: 幾何構造とタイポグラフィ基準 -->
@@ -669,6 +872,7 @@
           <span class="control-val" id="val-count">4</span>
         </div>
         <input type="range" id="ctrl-count" min="2" max="12" value="4" oninput="onCountChange(this.value)">
+        <div class="guide-tip" id="guide-count">図解のパーツ数（2〜12分割）を増減します。下のテキスト入力欄の数も自動で連動します。</div>
       </div>
 
       <div class="control-row" id="row-inner">
@@ -677,6 +881,7 @@
           <span class="control-val" id="val-inner">110</span>
         </div>
         <input type="range" id="ctrl-inner" min="0" max="170" value="110" oninput="render()">
+        <div class="guide-tip" id="guide-inner">「0」にすると中心が詰まった円グラフになり、数値を上げるとドーナツ型のリングになります。</div>
       </div>
 
       <div class="control-row" id="row-gap">
@@ -685,6 +890,7 @@
           <span class="control-val" id="val-gap">6px</span>
         </div>
         <input type="range" id="ctrl-gap" min="0" max="24" value="6" step="1" oninput="render()">
+        <div class="guide-tip" id="guide-gap">隣り合うパーツ同士の隙間（余白）の広さを調整します。</div>
       </div>
 
       <div class="control-row" id="row-arrow">
@@ -693,6 +899,7 @@
           <span class="control-val" id="val-arrow">0</span>
         </div>
         <input type="range" id="ctrl-arrow" min="0" max="25" value="0" step="1" oninput="render()">
+        <div class="guide-tip" id="guide-arrow">数値を上げるとパーツの先端が矢印状に変化し、時計回りの進行やサイクルを表現できます。</div>
       </div>
 
       <!-- サテライト用：接続線の太さ調整 -->
@@ -702,6 +909,7 @@
           <span class="control-val" id="val-line-width">2px</span>
         </div>
         <input type="range" id="ctrl-line-width" min="0" max="6" value="2" step="0.5" oninput="render()">
+        <div class="guide-tip">中心円と子円を結ぶ破線の太さを調整します。「0」にすると線を非表示にできます。</div>
       </div>
 
       <div class="control-row" id="row-rot">
@@ -710,6 +918,7 @@
           <span class="control-val" id="val-rot">0°</span>
         </div>
         <input type="range" id="ctrl-rot" min="-180" max="180" value="0" oninput="render()">
+        <div class="guide-tip">図解全体を回転させ、先頭パーツや頂点の位置を見やすい角度に調整します。</div>
       </div>
 
       <!-- 基本テキスト設定サブグループ -->
@@ -731,6 +940,7 @@
             <option value="'Arial Narrow', 'Trebuchet MS', 'Yu Gothic', sans-serif">コンデンス・長体（省スペース）</option>
             <option value="'Consolas', 'Monaco', 'Courier New', monospace">等幅・テクニカル（IT・数値）</option>
           </select>
+          <div class="guide-tip">資料のトーンや用途に合わせて7種類の書体から一括で切り替えられます。</div>
         </div>
 
         <div class="control-row">
@@ -741,6 +951,7 @@
             <button class="mini-btn active" id="btn-text-white" style="flex:1;" onclick="setTextColor('#ffffff')">白文字</button>
             <button class="mini-btn" id="btn-text-dark" style="flex:1;" onclick="setTextColor('#1e293b')">ダーク文字</button>
           </div>
+          <div class="guide-tip">図形の濃淡や背景色に合わせて、文字色を「白」または「ダーク（濃紺）」に切り替えます。</div>
         </div>
 
         <div class="control-row" style="margin-bottom:0;" id="row-base-font-size">
@@ -749,6 +960,7 @@
             <span class="control-val" id="val-font">16px</span>
           </div>
           <input type="range" id="ctrl-font" min="10" max="28" value="16" oninput="render()">
+          <div class="guide-tip">図形内に表示されるラベル文字の大きさを一括調整します。</div>
         </div>
 
         <!-- レーダー用：文字位置 -->
@@ -758,6 +970,7 @@
             <span class="control-val" id="val-label-offset">32px</span>
           </div>
           <input type="range" id="ctrl-label-offset" min="15" max="70" value="32" step="1" oninput="render()">
+          <div class="guide-tip">多角形の各頂点からラベル文字までの距離（離れ具合）を調整します。</div>
         </div>
       </div>
     </div>
@@ -773,6 +986,7 @@
           <input type="color" id="base-color-picker" value="#00d2ff" onchange="generateCustomPalette(this.value)">
         </div>
       </div>
+      <div class="guide-tip">5種のプリセット配色のほか、右下の色アイコンから好きな基準色を1色選ぶだけで、調和する6色のグラデーションパレットを自動生成できます。</div>
     </div>
 
     <!-- 04: テキストラベル編集 -->
@@ -784,6 +998,10 @@
       <div class="labels-header-sub">
         <span style="font-size:10.5px; color:var(--text-muted);">番号クリックで個別色指定</span>
         <span class="reset-link" onclick="resetOverrideColors()">個別色をリセット</span>
+      </div>
+      <div class="guide-tip" style="margin-top:0; margin-bottom:8px;">
+        ・文字の中に「/（半角スラッシュ）」を入れるとその位置で改行されます（例：01 / 計画 / Plan）。<br>
+        ・左側の色付き番号アイコンをクリックすると、そのパーツだけ個別に好きな色へ変更できます。
       </div>
       <div class="labels-container" id="labels-list"></div>
     </div>
@@ -832,6 +1050,28 @@
     renderLabelInputs();
     render();
   }
+
+  /* ガイド表示モード切替 */
+  function toggleGuideMode() {
+    const isShowing = document.body.classList.toggle('show-guide');
+    const btn = document.getElementById('btn-guide-toggle');
+    btn.classList.toggle('active', isShowing);
+  }
+
+  /* 右上「?」ヘルプポップオーバー開閉 */
+  function toggleHelp(e) {
+    e.stopPropagation();
+    const pop = document.getElementById('help-popover');
+    pop.classList.toggle('active');
+  }
+
+  document.addEventListener('click', function(e) {
+    const pop = document.getElementById('help-popover');
+    const btn = document.getElementById('btn-help');
+    if (pop && !pop.contains(e.target) && e.target !== btn) {
+      pop.classList.remove('active');
+    }
+  });
 
   function hexToHsl(hex) {
     let r = parseInt(hex.slice(1, 3), 16) / 255;
@@ -1032,6 +1272,10 @@
     const lblGap = document.getElementById('lbl-gap');
     const lblArrow = document.getElementById('lbl-arrow');
 
+    const guideCount = document.getElementById('guide-count');
+    const guideInner = document.getElementById('guide-inner');
+    const guideGap = document.getElementById('guide-gap');
+
     const ctrlCount = document.getElementById('ctrl-count');
     const ctrlInner = document.getElementById('ctrl-inner');
     const ctrlGap = document.getElementById('ctrl-gap');
@@ -1050,6 +1294,10 @@
       lblInner.textContent = '内径サイズ（Inner Radius）';
       lblGap.textContent = 'パーツ間隔（Gap Width）';
       lblArrow.textContent = 'エッジ矢印（Arrow Depth）';
+
+      guideCount.textContent = 'リングの分割数（2〜12分割）を増減します。下のテキスト入力欄の数も連動します。';
+      guideInner.textContent = '「0」にすると中心が詰まった円グラフになり、数値を上げるとドーナツ型のリングになります。';
+      guideGap.textContent = '隣り合うパーツ同士の隙間（余白）の広さを調整します。';
 
       ctrlCount.min = '2';
       ctrlCount.max = '12';
@@ -1078,6 +1326,9 @@
       lblCount.textContent = '層数（Layers）';
       lblGap.textContent = 'リング境界・隙間（Stroke Gap）';
 
+      guideCount.textContent = '中心コアから外側へ広がる同心円の階層数（2〜6層）を設定します。';
+      guideGap.textContent = '各階層リングの間の隙間（境界の余白）を調整します。';
+
       ctrlCount.min = '2';
       ctrlCount.max = '6';
       if (state.count > 6) state.count = 6;
@@ -1099,6 +1350,10 @@
       lblCount.textContent = '分割数（Segments）';
       lblInner.textContent = '中心円サイズ（Core Radius）';
       lblGap.textContent = '子円サイズ（Node Radius）';
+
+      guideCount.textContent = '中心の周りに配置する子円の数（2〜12個）を増減します。';
+      guideInner.textContent = '中央に配置されるメイン円（CORE）の大きさを調整します。';
+      guideGap.textContent = '周囲に放射配置される各子円の大きさを調整します。';
 
       ctrlCount.min = '2';
       ctrlCount.max = '12';
@@ -1124,6 +1379,8 @@
       rowRot.style.display = 'block';
 
       lblCount.textContent = '軸数（Axes）';
+      guideCount.textContent = '多角形の頂点・評価軸の数（三角形〜十二角形）を設定します。';
+
       ctrlCount.min = '3';
       ctrlCount.max = '12';
       ctrlCount.value = state.count;
@@ -1412,6 +1669,7 @@
         const pLabel = polarToCartesian(cx, cy, polyRadius + labelOffset, angle);
         const color = getItemColor(i);
 
+        html += `<line x1="0" y1="0" x2="${pEdge.x.toFixed(1)}" y2="${pEdge.y.toFixed(1)}" transform="translate(${cx === 0 ? 0 : 0},0)" stroke="none"/>`;
         html += `<line x1="${cx}" y1="${cy}" x2="${pEdge.x.toFixed(1)}" y2="${pEdge.y.toFixed(1)}" stroke="${palette.colors[0]}" stroke-width="1.2" opacity="0.4"/>`;
         html += `<circle cx="${pEdge.x.toFixed(1)}" cy="${pEdge.y.toFixed(1)}" r="7" fill="${color}" stroke="#ffffff" stroke-width="2"/>`;
         html += renderMultilineText(pLabel.x, pLabel.y, state.labels[i], fontSize, state.textColor);
