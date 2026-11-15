@@ -41,7 +41,6 @@
     flex-direction: column;
   }
 
-  /* ヘッダー（モバイル基準） */
   header {
     height: 42px;
     min-height: 42px;
@@ -51,7 +50,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 10px;
+    padding: 0 8px;
     flex-shrink: 0;
     z-index: 100;
   }
@@ -59,12 +58,12 @@
   .brand {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
 
   .brand-logo {
-    width: 18px;
-    height: 18px;
+    width: 17px;
+    height: 17px;
     border: 2px solid var(--accent-cyan);
     border-radius: 50%;
     position: relative;
@@ -77,23 +76,23 @@
 
   .brand-logo::after {
     content: '';
-    width: 7px;
+    width: 6px;
     height: 3px;
     border-bottom: 2px solid var(--accent-cyan);
-    border-radius: 0 0 7px 7px;
+    border-radius: 0 0 6px 6px;
     margin-top: 2px;
   }
 
   .brand-title-wrap {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
   }
 
   .brand-title {
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 600;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.2px;
     color: #fff;
     white-space: nowrap;
   }
@@ -101,11 +100,11 @@
   .pro-badge {
     background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
     color: #000;
-    font-size: 8.5px;
+    font-size: 8px;
     font-weight: 800;
     padding: 1px 4px;
     border-radius: 3px;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
   }
 
   .brand-sub {
@@ -118,11 +117,10 @@
     white-space: nowrap;
   }
 
-  /* 出力ボタン群 */
   .export-group {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
     position: relative;
   }
 
@@ -133,8 +131,8 @@
   }
 
   .btn-help {
-    width: 23px;
-    height: 23px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     background: var(--panel-bg);
     border: 1px solid var(--border-color);
@@ -159,7 +157,7 @@
     position: absolute;
     top: calc(100% + 8px);
     right: 0;
-    width: min(290px, 92vw);
+    width: min(310px, 92vw);
     background: #0f172a;
     border: 1px solid var(--border-color);
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
@@ -210,9 +208,9 @@
     background: var(--panel-bg);
     color: var(--text-main);
     border: 1px solid var(--border-color);
-    padding: 4px 6px;
-    border-radius: 5px;
-    font-size: 10.5px;
+    padding: 4px 5px;
+    border-radius: 4px;
+    font-size: 10px;
     cursor: pointer;
     transition: all 0.2s;
     display: flex;
@@ -245,7 +243,6 @@
     display: none;
   }
 
-  /* ワークスペース（縦積み・モバイルファースト） */
   .workspace {
     display: flex;
     flex-direction: column;
@@ -254,7 +251,6 @@
     overflow: hidden;
   }
 
-  /* プレビューエリア（従来の約1.5倍サイズ：高さ300px / 最大42vh） */
   .preview-area {
     flex: none;
     width: 100%;
@@ -307,7 +303,6 @@
     user-select: none;
   }
 
-  /* サイドバー（下部スクロール領域） */
   .sidebar {
     flex: 1;
     min-height: 0;
@@ -321,7 +316,6 @@
     gap: 10px;
   }
 
-  /* 背景設定ボックス（サイドバー最上部） */
   .bg-setting-box {
     background: rgba(11, 17, 30, 0.6);
     border: 1px solid var(--border-color);
@@ -745,13 +739,21 @@
     text-align: center;
   }
 
-  /* PC向けレイアウト（画面幅861px以上） */
   @media (min-width: 861px) {
     header {
       height: 44px;
       min-height: 44px;
       max-height: 44px;
       padding: 0 16px;
+    }
+
+    .brand {
+      gap: 8px;
+    }
+
+    .brand-logo {
+      width: 18px;
+      height: 18px;
     }
 
     .brand-title {
@@ -770,9 +772,14 @@
       display: none;
     }
 
+    .export-group {
+      gap: 6px;
+    }
+
     .btn {
       padding: 4px 9px;
       font-size: 11.5px;
+      border-radius: 5px;
       gap: 4px;
     }
 
@@ -783,7 +790,7 @@
     }
 
     .help-popover {
-      width: 300px;
+      width: 310px;
     }
 
     .workspace {
@@ -850,6 +857,12 @@
           </div>
         </div>
         <div class="help-item">
+          <div class="help-item-name">PDFを保存</div>
+          <div class="help-item-desc">
+            ・<span>Canva</span>：アップロードするとテキスト要素が独立した編集可能なテキストボックスとして自動分離されます。
+          </div>
+        </div>
+        <div class="help-item">
           <div class="help-item-name">透過PNGを保存</div>
           <div class="help-item-desc">
             ・<span>全ツール共通</span>：背景透過画像（1200×1200px）として手元に保管・共有するバックアップ用。
@@ -866,6 +879,10 @@
       <span class="btn-text-full">SVGを保存</span>
       <span class="btn-text-short">SVG</span>
     </button>
+    <button class="btn" onclick="downloadPDF()">
+      <span class="btn-text-full">PDFを保存</span>
+      <span class="btn-text-short">PDF</span>
+    </button>
     <button class="btn" onclick="downloadPNG()">
       <span class="btn-text-full">透過PNGを保存</span>
       <span class="btn-text-short">PNG</span>
@@ -874,16 +891,13 @@
 </header>
 
 <div class="workspace">
-  <!-- プレビューエリア -->
   <main class="preview-area">
     <div class="canvas-card bg-white" id="canvas-card">
       <svg id="diagram-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg"></svg>
     </div>
   </main>
 
-  <!-- サイドバー -->
   <aside class="sidebar">
-    <!-- デザイン確認用背景設定 -->
     <div class="bg-setting-box">
       <span class="bg-setting-label">デザイン確認用背景設定：</span>
       <div class="btn-toggle-group">
@@ -892,7 +906,6 @@
       </div>
     </div>
 
-    <!-- 01: モード選択 -->
     <div class="section-box">
       <div class="section-label"><span>01 / DIAGRAM MODE</span></div>
       <div class="mode-list-vertical">
@@ -911,7 +924,6 @@
       </div>
     </div>
 
-    <!-- 02: 幾何構造とタイポグラフィ基準 -->
     <div class="section-box">
       <div class="section-label"><span>02 / GEOMETRY & TYPOGRAPHY</span></div>
 
@@ -947,7 +959,6 @@
         <input type="range" id="ctrl-arrow" min="0" max="25" value="0" step="1" oninput="render()">
       </div>
 
-      <!-- サテライト用：接続線の太さ調整 -->
       <div class="control-row" id="row-line-width" style="display:none;">
         <div class="control-header">
           <span>接続線の太さ（Line Width）</span>
@@ -964,7 +975,6 @@
         <input type="range" id="ctrl-rot" min="-180" max="180" value="0" oninput="render()">
       </div>
 
-      <!-- 基本テキスト設定サブグループ -->
       <div class="sub-group-box">
         <div class="sub-group-header">
           <span>基本テキスト設定</span>
@@ -1003,7 +1013,6 @@
           <input type="range" id="ctrl-font" min="10" max="28" value="16" oninput="render()">
         </div>
 
-        <!-- レーダー用：文字位置 -->
         <div class="control-row" id="row-label-offset" style="display:none; margin-bottom:0; margin-top:10px;">
           <div class="control-header">
             <span>文字位置</span>
@@ -1014,7 +1023,6 @@
       </div>
     </div>
 
-    <!-- 03: 配色パレット -->
     <div class="section-box">
       <div class="section-label"><span>03 / COLOR PALETTE</span></div>
       <div class="palette-list" id="palette-container"></div>
@@ -1027,7 +1035,6 @@
       </div>
     </div>
 
-    <!-- 04: テキスト＆ウェイト編集 -->
     <div class="section-box">
       <div class="section-label">
         <span>04 / TEXT LABELS & WEIGHTS</span>
@@ -1052,14 +1059,11 @@
         </div>
       </div>
 
-      <!-- 中心文字コンテキストUI -->
       <div id="center-node-container"></div>
 
-      <!-- 外周ラベルリスト -->
       <div class="labels-container" id="labels-list"></div>
     </div>
 
-    <!-- 05: 入力・設定の保存と読込 -->
     <div class="section-box">
       <div class="section-label"><span>05 / CONFIG FILE & PRESETS</span></div>
       <div class="storage-action-grid">
@@ -2175,6 +2179,404 @@
     const a = document.createElement('a');
     a.href = url;
     a.download = `arc-diagram-pro-${state.mode}-${state.count}.svg`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  /* =========================================================
+     ベクターPDF生成エンジン（UniJIS-UTF16-H対応・テキスト分離出力）
+     ========================================================= */
+  function hexToRgbNorm(hex) {
+    if (!hex || hex === 'none') return null;
+    let clean = hex.replace('#', '').trim();
+    if (clean.length === 3) {
+      clean = clean[0] + clean[0] + clean[1] + clean[1] + clean[2] + clean[2];
+    }
+    if (clean.length !== 6) return [0, 0, 0];
+    const r = parseInt(clean.slice(0, 2), 16) / 255;
+    const g = parseInt(clean.slice(2, 4), 16) / 255;
+    const b = parseInt(clean.slice(4, 6), 16) / 255;
+    return [r.toFixed(4), g.toFixed(4), b.toFixed(4)];
+  }
+
+  function svgArcToBeziers(x1, y1, rx, ry, phiDeg, largeArcFlag, sweepFlag, x2, y2) {
+    if (rx === 0 || ry === 0 || (x1 === x2 && y1 === y2)) {
+      return [];
+    }
+    rx = Math.abs(rx);
+    ry = Math.abs(ry);
+    const phi = (phiDeg * Math.PI) / 180;
+    const cosPhi = Math.cos(phi);
+    const sinPhi = Math.sin(phi);
+
+    const dx2 = (x1 - x2) / 2;
+    const dy2 = (y1 - y2) / 2;
+    const x1p = cosPhi * dx2 + sinPhi * dy2;
+    const y1p = -sinPhi * dx2 + cosPhi * dy2;
+
+    const lambda = (x1p * x1p) / (rx * rx) + (y1p * y1p) / (ry * ry);
+    if (lambda > 1) {
+      const sqrtLambda = Math.sqrt(lambda);
+      rx *= sqrtLambda;
+      ry *= sqrtLambda;
+    }
+
+    const rx2 = rx * rx;
+    const ry2 = ry * ry;
+    const x1p2 = x1p * x1p;
+    const y1p2 = y1p * y1p;
+
+    let num = rx2 * ry2 - rx2 * y1p2 - ry2 * x1p2;
+    let den = rx2 * y1p2 + ry2 * x1p2;
+    if (num < 0) num = 0;
+    let factor = Math.sqrt(num / den);
+    if (largeArcFlag === sweepFlag) factor = -factor;
+
+    const cxp = factor * ((rx * y1p) / ry);
+    const cyp = factor * (-(ry * x1p) / rx);
+
+    const cx = cosPhi * cxp - sinPhi * cyp + (x1 + x2) / 2;
+    const cy = sinPhi * cxp + cosPhi * cyp + (y1 + y2) / 2;
+
+    const angleVec = (ux, uy, vx, vy) => {
+      const dot = ux * vx + uy * vy;
+      const len = Math.sqrt(ux * ux + uy * uy) * Math.sqrt(vx * vx + vy * vy);
+      let ang = Math.acos(Math.max(-1, Math.min(1, dot / len)));
+      if (ux * vy - uy * vx < 0) ang = -ang;
+      return ang;
+    };
+
+    const theta1 = angleVec(1, 0, (x1p - cxp) / rx, (y1p - cyp) / ry);
+    let dTheta = angleVec((x1p - cxp) / rx, (y1p - cyp) / ry, (-x1p - cxp) / rx, (-y1p - cyp) / ry);
+
+    if (sweepFlag === 0 && dTheta > 0) dTheta -= 2 * Math.PI;
+    if (sweepFlag === 1 && dTheta < 0) dTheta += 2 * Math.PI;
+
+    const segments = Math.max(1, Math.ceil(Math.abs(dTheta) / (Math.PI / 2)));
+    const delta = dTheta / segments;
+    const t = (4 / 3) * Math.tan(delta / 4);
+
+    const curves = [];
+    let curTheta = theta1;
+    for (let i = 0; i < segments; i++) {
+      const nextTheta = curTheta + delta;
+      const cosT1 = Math.cos(curTheta), sinT1 = Math.sin(curTheta);
+      const cosT2 = Math.cos(nextTheta), sinT2 = Math.sin(nextTheta);
+
+      const p1x = rx * (cosT1 - t * sinT1);
+      const p1y = ry * (sinT1 + t * cosT1);
+      const p2x = rx * (cosT2 + t * sinT2);
+      const p2y = ry * (sinT2 - t * cosT2);
+      const ex = rx * cosT2;
+      const ey = ry * sinT2;
+
+      curves.push([
+        cosPhi * p1x - sinPhi * p1y + cx,
+        sinPhi * p1x + cosPhi * p1y + cy,
+        cosPhi * p2x - sinPhi * p2y + cx,
+        sinPhi * p2x + cosPhi * p2y + cy,
+        cosPhi * ex - sinPhi * ey + cx,
+        sinPhi * ex + cosPhi * ey + cy
+      ]);
+      curTheta = nextTheta;
+    }
+    return curves;
+  }
+
+  function convertSvgPathToPdfOps(dAttr, pageHeight) {
+    if (!dAttr) return '';
+    const tokens = dAttr.match(/[a-zA-Z]|[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?/g);
+    if (!tokens) return '';
+
+    let i = 0;
+    let cmd = '';
+    let curX = 0, curY = 0;
+    let startX = 0, startY = 0;
+    const ops = [];
+
+    const py = (y) => (pageHeight - y).toFixed(3);
+    const px = (x) => x.toFixed(3);
+
+    while (i < tokens.length) {
+      if (/^[a-zA-Z]$/.test(tokens[i])) {
+        cmd = tokens[i++];
+      }
+      if (cmd === 'M') {
+        const x = parseFloat(tokens[i++]);
+        const y = parseFloat(tokens[i++]);
+        curX = startX = x;
+        curY = startY = y;
+        ops.push(`${px(x)} ${py(y)} m`);
+        cmd = 'L';
+      } else if (cmd === 'L') {
+        const x = parseFloat(tokens[i++]);
+        const y = parseFloat(tokens[i++]);
+        curX = x;
+        curY = y;
+        ops.push(`${px(x)} ${py(y)} l`);
+      } else if (cmd === 'A') {
+        const rx = parseFloat(tokens[i++]);
+        const ry = parseFloat(tokens[i++]);
+        const rot = parseFloat(tokens[i++]);
+        const largeArc = parseInt(tokens[i++], 10);
+        const sweep = parseInt(tokens[i++], 10);
+        const x = parseFloat(tokens[i++]);
+        const y = parseFloat(tokens[i++]);
+        const curves = svgArcToBeziers(curX, curY, rx, ry, rot, largeArc, sweep, x, y);
+        curves.forEach(c => {
+          ops.push(`${px(c[0])} ${py(c[1])} ${px(c[2])} ${py(c[3])} ${px(c[4])} ${py(c[5])} c`);
+        });
+        curX = x;
+        curY = y;
+      } else if (cmd === 'Z' || cmd === 'z') {
+        ops.push('h');
+        curX = startX;
+        curY = startY;
+      } else {
+        i++;
+      }
+    }
+    return ops.join('\n');
+  }
+
+  function encodeUtf16BeHex(str) {
+    let hex = '';
+    for (let i = 0; i < str.length; i++) {
+      const code = str.charCodeAt(i);
+      hex += code.toString(16).padStart(4, '0').toUpperCase();
+    }
+    return `<${hex}>`;
+  }
+
+  function estimateTextWidth(str, fontSize) {
+    let units = 0;
+    for (let i = 0; i < str.length; i++) {
+      const code = str.charCodeAt(i);
+      units += (code >= 0x20 && code <= 0x7E) ? 0.54 : 1.0;
+    }
+    return units * fontSize;
+  }
+
+  function downloadPDF() {
+    const svgEl = document.getElementById('diagram-svg');
+    const pageW = 600;
+    const pageH = 600;
+    const contentLines = [];
+    const extGStates = {};
+    let gsCounter = 1;
+
+    const getAlphaStateName = (fillOp, strokeOp) => {
+      const f = Math.round(fillOp * 100) / 100;
+      const s = Math.round(strokeOp * 100) / 100;
+      if (f >= 1 && s >= 1) return null;
+      const key = `${f}_${s}`;
+      if (!extGStates[key]) {
+        extGStates[key] = { name: `GS${gsCounter++}`, ca: f, CA: s };
+      }
+      return extGStates[key].name;
+    };
+
+    const children = Array.from(svgEl.children);
+    children.forEach(el => {
+      const tag = el.tagName.toLowerCase();
+      const baseOpacity = parseFloat(el.getAttribute('opacity') || '1');
+      const fillAttr = el.getAttribute('fill');
+      const fillOpacity = parseFloat(el.getAttribute('fill-opacity') || '1') * baseOpacity;
+      const strokeAttr = el.getAttribute('stroke');
+      const strokeOpacity = parseFloat(el.getAttribute('stroke-opacity') || '1') * baseOpacity;
+      const strokeWidth = parseFloat(el.getAttribute('stroke-width') || '1');
+      const dashArray = el.getAttribute('stroke-dasharray');
+
+      const fillRgb = (fillAttr && fillAttr !== 'none') ? hexToRgbNorm(fillAttr) : null;
+      const strokeRgb = (strokeAttr && strokeAttr !== 'none') ? hexToRgbNorm(strokeAttr) : null;
+
+      if (tag === 'path') {
+        const dAttr = el.getAttribute('d');
+        const pathOps = convertSvgPathToPdfOps(dAttr, pageH);
+        if (!pathOps) return;
+
+        contentLines.push('q');
+        const gsName = getAlphaStateName(fillRgb ? fillOpacity : 1, strokeRgb ? strokeOpacity : 1);
+        if (gsName) contentLines.push(`/${gsName} gs`);
+        if (fillRgb) contentLines.push(`${fillRgb.join(' ')} rg`);
+        if (strokeRgb) {
+          contentLines.push(`${strokeRgb.join(' ')} RG`);
+          contentLines.push(`${strokeWidth.toFixed(2)} w`);
+        }
+        contentLines.push(pathOps);
+        if (fillRgb && strokeRgb) {
+          contentLines.push('B');
+        } else if (fillRgb) {
+          contentLines.push('f');
+        } else if (strokeRgb) {
+          contentLines.push('S');
+        }
+        contentLines.push('Q');
+
+      } else if (tag === 'circle') {
+        const cx = parseFloat(el.getAttribute('cx'));
+        const cy = parseFloat(el.getAttribute('cy'));
+        const r = parseFloat(el.getAttribute('r'));
+        const k = 0.5522847498 * r;
+        const py = (y) => (pageH - y).toFixed(3);
+        const px = (x) => x.toFixed(3);
+
+        contentLines.push('q');
+        const gsName = getAlphaStateName(fillRgb ? fillOpacity : 1, strokeRgb ? strokeOpacity : 1);
+        if (gsName) contentLines.push(`/${gsName} gs`);
+        if (fillRgb) contentLines.push(`${fillRgb.join(' ')} rg`);
+        if (strokeRgb) {
+          contentLines.push(`${strokeRgb.join(' ')} RG`);
+          contentLines.push(`${strokeWidth.toFixed(2)} w`);
+        }
+
+        contentLines.push(`${px(cx)} ${py(cy - r)} m`);
+        contentLines.push(`${px(cx + k)} ${py(cy - r)} ${px(cx + r)} ${py(cy - k)} ${px(cx + r)} ${py(cy)} c`);
+        contentLines.push(`${px(cx + r)} ${py(cy + k)} ${px(cx + k)} ${py(cy + r)} ${px(cx)} ${py(cy + r)} c`);
+        contentLines.push(`${px(cx - k)} ${py(cy + r)} ${px(cx - r)} ${py(cy + k)} ${px(cx - r)} ${py(cy)} c`);
+        contentLines.push(`${px(cx - r)} ${py(cy - k)} ${px(cx - k)} ${py(cy - r)} ${px(cx)} ${py(cy - r)} c`);
+        contentLines.push('h');
+
+        if (fillRgb && strokeRgb) {
+          contentLines.push('B');
+        } else if (fillRgb) {
+          contentLines.push('f');
+        } else if (strokeRgb) {
+          contentLines.push('S');
+        }
+        contentLines.push('Q');
+
+      } else if (tag === 'line') {
+        if (!strokeRgb) return;
+        const x1 = parseFloat(el.getAttribute('x1'));
+        const y1 = parseFloat(el.getAttribute('y1'));
+        const x2 = parseFloat(el.getAttribute('x2'));
+        const y2 = parseFloat(el.getAttribute('y2'));
+
+        contentLines.push('q');
+        const gsName = getAlphaStateName(1, strokeOpacity);
+        if (gsName) contentLines.push(`/${gsName} gs`);
+        contentLines.push(`${strokeRgb.join(' ')} RG`);
+        contentLines.push(`${strokeWidth.toFixed(2)} w`);
+        if (dashArray && dashArray !== 'none') {
+          contentLines.push(`[${dashArray}] 0 d`);
+        }
+        contentLines.push(`${x1.toFixed(3)} ${(pageH - y1).toFixed(3)} m`);
+        contentLines.push(`${x2.toFixed(3)} ${(pageH - y2).toFixed(3)} l`);
+        contentLines.push('S');
+        contentLines.push('Q');
+
+      } else if (tag === 'polygon') {
+        const ptsAttr = el.getAttribute('points');
+        if (!ptsAttr) return;
+        const pairs = ptsAttr.trim().split(/\s+/).map(p => p.split(',').map(Number));
+        if (pairs.length < 3) return;
+
+        contentLines.push('q');
+        const gsName = getAlphaStateName(fillRgb ? fillOpacity : 1, strokeRgb ? strokeOpacity : 1);
+        if (gsName) contentLines.push(`/${gsName} gs`);
+        if (fillRgb) contentLines.push(`${fillRgb.join(' ')} rg`);
+        if (strokeRgb) {
+          contentLines.push(`${strokeRgb.join(' ')} RG`);
+          contentLines.push(`${strokeWidth.toFixed(2)} w`);
+          if (dashArray && dashArray !== 'none') {
+            contentLines.push(`[${dashArray}] 0 d`);
+          }
+        }
+
+        contentLines.push(`${pairs[0][0].toFixed(3)} ${(pageH - pairs[0][1]).toFixed(3)} m`);
+        for (let k = 1; k < pairs.length; k++) {
+          contentLines.push(`${pairs[k][0].toFixed(3)} ${(pageH - pairs[k][1]).toFixed(3)} l`);
+        }
+        contentLines.push('h');
+
+        if (fillRgb && strokeRgb) {
+          contentLines.push('B');
+        } else if (fillRgb) {
+          contentLines.push('f');
+        } else if (strokeRgb) {
+          contentLines.push('S');
+        }
+        contentLines.push('Q');
+
+      } else if (tag === 'text') {
+        const fontSize = parseFloat(el.getAttribute('font-size') || '16');
+        const tspans = Array.from(el.querySelectorAll('tspan'));
+        if (!fillRgb || tspans.length === 0) return;
+
+        tspans.forEach(ts => {
+          const textStr = ts.textContent || '';
+          if (!textStr) return;
+          const tx = parseFloat(ts.getAttribute('x'));
+          const ty = parseFloat(ts.getAttribute('y'));
+          const estW = estimateTextWidth(textStr, fontSize);
+          const drawX = tx - estW / 2;
+          const drawY = pageH - ty - fontSize * 0.35;
+
+          contentLines.push('q');
+          contentLines.push(`${fillRgb.join(' ')} rg`);
+          contentLines.push('BT');
+          contentLines.push(`/F1 ${fontSize.toFixed(1)} Tf`);
+          contentLines.push(`1 0 0 1 ${drawX.toFixed(2)} ${drawY.toFixed(2)} Tm`);
+          contentLines.push(`${encodeUtf16BeHex(textStr)} Tj`);
+          contentLines.push('ET');
+          contentLines.push('Q');
+        });
+      }
+    });
+
+    const objects = [];
+    objects[1] = `<< /Type /Catalog /Pages 2 0 R >>`;
+    objects[2] = `<< /Type /Pages /Kids [3 0 R] /Count 1 >>`;
+    objects[4] = `<< /Type /Font /Subtype /Type0 /BaseFont /HeiseiKakuGo-W5-UniJIS-UTF16-H /Encoding /UniJIS-UTF16-H /DescendantFonts [5 0 R] >>`;
+    objects[5] = `<< /Type /Font /Subtype /CIDFontType0 /BaseFont /HeiseiKakuGo-W5 /CIDSystemInfo << /Registry (Adobe) /Ordering (Japan1) /Supplement 2 >> /FontDescriptor 6 0 R /DW 1000 /W [ 1 95 500 ] >>`;
+    objects[6] = `<< /Type /FontDescriptor /FontName /HeiseiKakuGo-W5 /Flags 4 /FontBBox [-120 -250 1120 950] /ItalicAngle 0 /Ascent 880 /Descent -120 /CapHeight 750 /StemV 80 >>`;
+
+    let nextObjId = 8;
+    const gsEntries = [];
+
+    Object.values(extGStates).forEach(gs => {
+      const id = nextObjId++;
+      objects[id] = `<< /Type /ExtGState /ca ${gs.ca} /CA ${gs.CA} >>`;
+      gsEntries.push(`/${gs.name} ${id} 0 R`);
+    });
+
+    const pageStream = contentLines.join('\n');
+    objects[7] = `<< /Length ${pageStream.length} >>\nstream\n${pageStream}\nendstream`;
+
+    const extGStateDict = gsEntries.length > 0 ? `/ExtGState << ${gsEntries.join(' ')} >>` : '';
+    objects[3] = `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW} ${pageH}] /Resources << /Font << /F1 4 0 R >> ${extGStateDict} >> /Contents 7 0 R >>`;
+
+    let pdf = '%PDF-1.4\n';
+    const offsets = [0];
+
+    for (let id = 1; id < objects.length; id++) {
+      offsets[id] = pdf.length;
+      pdf += `${id} 0 obj\n${objects[id]}\nendobj\n`;
+    }
+
+    const xrefOffset = pdf.length;
+    pdf += `xref\n0 ${objects.length}\n`;
+    pdf += `0000000000 65535 f \n`;
+    for (let id = 1; id < objects.length; id++) {
+      pdf += `${String(offsets[id]).padStart(10, '0')} 00000 n \n`;
+    }
+
+    pdf += `trailer\n<< /Size ${objects.length} /Root 1 0 R >>\n`;
+    pdf += `startxref\n${xrefOffset}\n%%EOF`;
+
+    const bytes = new Uint8Array(pdf.length);
+    for (let i = 0; i < pdf.length; i++) {
+      bytes[i] = pdf.charCodeAt(i) & 0xFF;
+    }
+
+    const blob = new Blob([bytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `arc-diagram-pro-${state.mode}-${state.count}.pdf`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
