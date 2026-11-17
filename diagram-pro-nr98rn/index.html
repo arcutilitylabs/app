@@ -111,10 +111,33 @@
     display: none;
     font-size: 11px;
     color: var(--accent-cyan);
-    margin-left: 6px;
+    margin-left: 4px;
     padding-left: 6px;
     border-left: 1px solid var(--border-color);
     white-space: nowrap;
+  }
+
+  /* ポータルリンクボタン（ヘッダー左上・控えめなトーン） */
+  .btn-portal-link {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 3px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 2px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-portal-link:hover {
+    border-color: var(--accent-cyan);
+    color: #fff;
   }
 
   .export-group {
@@ -157,10 +180,10 @@
     position: absolute;
     top: calc(100% + 8px);
     right: 0;
-    width: min(310px, 92vw);
+    width: min(320px, 92vw);
     background: #0f172a;
     border: 1px solid var(--border-color);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.75);
     border-radius: 8px;
     padding: 12px;
     z-index: 1000;
@@ -764,6 +787,12 @@
       display: inline;
     }
 
+    .btn-portal-link {
+      margin-left: 6px;
+      padding: 4px 10px;
+      font-size: 11px;
+    }
+
     .btn-text-full {
       display: inline;
     }
@@ -790,7 +819,7 @@
     }
 
     .help-popover {
-      width: 310px;
+      width: 325px;
     }
 
     .workspace {
@@ -835,6 +864,10 @@
       <span class="pro-badge">PRO</span>
     </div>
     <span class="brand-sub">Arc Utility Labs</span>
+    <a href="guide.html" target="_blank" rel="noopener" class="btn-portal-link" title="PRO版 活用＆カスタマイズガイドを開く">
+      <span class="btn-text-full">活用＆カスタムガイド ↗</span>
+      <span class="btn-text-short">ガイド ↗</span>
+    </a>
   </div>
 
   <div class="export-group">
@@ -845,14 +878,14 @@
         <div class="help-item">
           <div class="help-item-name">クリップボードにコピー</div>
           <div class="help-item-desc">
-            ・<span>Canva</span>：貼り付け後に色調調整が可能。手早くスライドへ組み込む際に最適。<br>
+            ・<span>Canva</span>：貼り付け後、上部の「メニュー」から色調調整が可能。手早くスライドへ組み込む際に最適。<br>
             ・<span>PowerPoint</span>：透過画像として高速に貼り付け。
           </div>
         </div>
         <div class="help-item">
           <div class="help-item-name">SVGを保存</div>
           <div class="help-item-desc">
-            ・<span>PowerPoint</span>：挿入後に「グループ解除」を実行することで各図形や文字に完全分解して自由編集が可能。<br>
+            ・<span>PowerPoint</span>：挿入後に「グループ解除（図形に変換）」を実行することで各図形や文字に完全分解して自由編集が可能。<br>
             ・<span>Canva</span>：高解像度ベクター素材としてアップロード可能。
           </div>
         </div>
