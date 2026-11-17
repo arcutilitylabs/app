@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arc Diagram Generator Pro | オフィシャルガイド＆カスタマイズポータル</title>
+<style>
+  :root {
+    --bg-dark: #070b14;
+    --bg-main: #0b111e;
+    --panel-bg: #131c2e;
+    --card-bg: #0f172a;
+    --border-color: #23314d;
+    --accent-cyan: #00d2ff;
+    --accent-blue: #0072ff;
+    --accent-amber: #fbbf24;
+    --accent-emerald: #34d399;
+    --text-main: #e2e8f0;
+    --text-muted: #8b9bb4;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body, button, input, textarea {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Segoe UI', 'Meiryo', sans-serif;
+  }
+
+  body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-image: 
+      radial-gradient(rgba(0, 210, 255, 0.05) 1px, transparent 1px),
+      radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 28px 28px;
+    background-position: 0 0, 14px 14px;
+  }
+
+  /* ヘッダー */
+  header {
+    background: rgba(11, 17, 30, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-logo {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--accent-cyan);
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 8px rgba(0, 210, 255, 0.4);
+  }
+
+  .brand-logo::after {
+    content: '';
+    width: 8px;
+    height: 4px;
+    border-bottom: 2px solid var(--accent-cyan);
+    border-radius: 0 0 8px 8px;
+    margin-top: 2px;
+  }
+
+  .brand-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .pro-badge {
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+    color: #000;
+    font-size: 9px;
+    font-weight: 900;
+    padding: 2px 5px;
+    border-radius: 3px;
+  }
+
+  .brand-sub {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    padding-left: 10px;
+    border-left: 1px solid var(--border-color);
+  }
+
+  /* ナビゲーション（ヘッダー内のモード切替） */
+  .nav-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .nav-tab {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-tab:hover {
+    border-color: var(--accent-cyan);
+    color: #fff;
+  }
+
+  .nav-tab.active-pro {
+    background: rgba(251, 191, 36, 0.14);
+    border-color: var(--accent-amber);
+    color: var(--accent-amber);
+  }
+
+  .nav-tab.active-basic {
+    background: rgba(0, 210, 255, 0.14);
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+  }
+
+  .nav-tab.active-custom {
+    background: rgba(52, 211, 153, 0.14);
+    border-color: var(--accent-emerald);
+    color: var(--accent-emerald);
+  }
+
+  .btn-back-tool {
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+    color: #fff;
+    text-decoration: none;
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-left: 4px;
+    transition: opacity 0.2s;
+  }
+
+  .btn-back-tool:hover {
+    opacity: 0.9;
+  }
+
+  /* メインコンテナ */
+  .container {
+    width: 100%;
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+    flex: 1;
+  }
+
+  .view-section {
+    display: none;
+  }
+
+  .view-section.active {
+    display: block;
+  }
+
+  /* =========================================================
+     VIEW 1: PRO機能ガイド（左右矢印によるページ送り式）
+     ========================================================= */
+  .pager-card {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    position: relative;
+  }
+
+  .pager-top-bar {
+    background: rgba(11, 17, 30, 0.7);
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .pager-step-dots {
+    display: flex;
+    gap: 8px;
+  }
+
+  .step-dot {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 5px 11px;
+    border-radius: 5px;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .step-dot:hover {
+    border-color: var(--accent-amber);
+    color: #fff;
+  }
+
+  .step-dot.active {
+    background: var(--accent-amber);
+    border-color: var(--accent-amber);
+    color: #000;
+  }
+
+  .page-counter {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-muted);
+    font-family: monospace;
+  }
+
+  .slide-stage {
+    position: relative;
+    padding: 26px 56px 28px;
+  }
+
+  /* Windowsフォトアプリ風の左右ページ送りボタン */
+  .side-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(11, 17, 30, 0.85);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+    user-select: none;
+  }
+
+  .side-nav-btn:hover:not(:disabled) {
+    background: rgba(0, 210, 255, 0.15);
+    border-color: var(--accent-cyan);
+    color: #fff;
+  }
+
+  .side-nav-btn:disabled {
+    opacity: 0.2;
+    cursor: default;
+    box-shadow: none;
+  }
+
+  .side-nav-prev {
+    left: 10px;
+  }
+
+  .side-nav-next {
+    right: 10px;
+  }
+
+  @media (max-width: 640px) {
+    .slide-stage {
+      padding: 20px 44px 24px;
+    }
+    .side-nav-btn {
+      width: 30px;
+      height: 30px;
+      font-size: 17px;
+    }
+    .side-nav-prev {
+      left: 6px;
+    }
+    .side-nav-next {
+      right: 6px;
+    }
+  }
+
+  .slide-header {
+    margin-bottom: 18px;
+  }
+
+  .slide-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .slide-num-badge {
+    background: linear-gradient(135deg, #fbbf24, #d97706);
+    color: #000;
+    font-size: 12px;
+    font-weight: 900;
+    padding: 3px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .slide-sub-tag {
+    color: var(--accent-amber);
+    font-size: 12.5px;
+    font-weight: 700;
+  }
+
+  .slide-title {
+    font-size: 23px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.35;
+  }
+
+  /* スライド内のSVGインフォグラフィック枠（全6ページ完全同一サイズ） */
+  .slide-visual-box {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .slide-visual-box svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .slide-desc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .desc-card {
+    background: rgba(11, 17, 30, 0.65);
+    border: 1px solid var(--border-color);
+    border-left: 3px solid var(--accent-cyan);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+
+  .desc-card.amber {
+    border-left-color: var(--accent-amber);
+  }
+
+  .desc-card-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  .desc-card-text {
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--text-muted);
+  }
+
+  .desc-card-text span {
+    color: var(--text-main);
+    font-weight: 600;
+  }
+
+  /* =========================================================
+     VIEW 2: 基本操作ガイド（一覧インフォグラフィック）
+     ========================================================= */
+  .section-header-block {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--accent-cyan);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 20px;
+  }
+
+  .basic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .basic-card {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 18px;
+  }
+
+  .basic-card-num {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--accent-cyan);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .basic-card-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .basic-item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .basic-item {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+
+  .basic-item strong {
+    color: var(--text-main);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* =========================================================
+     VIEW 3: カスタマイズ＆オフライン保存センター
+     ========================================================= */
+  .custom-box {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 22px;
+  }
+
+  .custom-box-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .badge-emerald {
+    background: rgba(52, 211, 153, 0.16);
+    border: 1px solid var(--accent-emerald);
+    color: var(--accent-emerald);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  .custom-box-lead {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .action-btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .btn-action-emerald {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .btn-action-emerald:hover {
+    opacity: 0.92;
+  }
+
+  .btn-action-outline {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-action-outline:hover {
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+  }
+
+  .code-Area-wrap {
+    position: relative;
+    margin-top: 12px;
+  }
+
+  .prompt-pre {
+    background: #060911;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    color: #cbd5e1;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    max-height: 360px;
+    overflow-y: auto;
+  }
+
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 12.5px;
+  }
+
+  .ref-table th, .ref-table td {
+    border: 1px solid var(--border-color);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .ref-table th {
+    background: rgba(11, 17, 30, 0.8);
+    color: var(--accent-cyan);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .ref-table td {
+    background: rgba(11, 17, 30, 0.4);
+    color: var(--text-main);
+    line-height: 1.55;
+  }
+
+  .code-inline {
+    font-family: monospace;
+    color: var(--accent-amber);
+    background: rgba(251, 191, 36, 0.1);
+    padding: 2px 5px;
+    border-radius: 3px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-logo"></div>
+    <span class="brand-title">Arc Diagram Generator</span>
+    <span class="pro-badge">PRO</span>
+    <span class="brand-sub">オフィシャルガイド＆カスタマイズポータル</span>
+  </div>
+
+  <div class="nav-group">
+    <button class="nav-tab active-pro" id="tab-pro" onclick="switchView('pro')">PRO機能ガイド（6ページ）</button>
+    <button class="nav-tab" id="tab-basic" onclick="switchView('basic')">基本操作ガイド</button>
+    <button class="nav-tab" id="tab-custom" onclick="switchView('custom')">カスタマイズ＆ファイル取得</button>
+    <a href="index.html" class="btn-back-tool">ツール画面を開く ↗</a>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- =========================================================
+       VIEW 1: PRO機能ガイド（左右フローティングボタンによるページ送り式）
+       ========================================================= -->
+  <section class="view-section active" id="view-pro">
+    <div class="pager-card">
+      <div class="pager-top-bar">
+        <div class="pager-step-dots" id="pager-dots"></div>
+        <span class="page-counter" id="page-counter">01 / 06</span>
+      </div>
+
+      <div class="slide-stage">
+        <button class="side-nav-btn side-nav-prev" id="btn-prev" onclick="changeSlide(-1)" title="前の機能へ">&#8249;</button>
+        <div id="slide-content"></div>
+        <button class="side-nav-btn side-nav-next" id="btn-next" onclick="changeSlide(1)" title="次の機能へ">&#8250;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       VIEW 2: 基本操作ガイド（FREE/PRO共通の操作体系）
+       ========================================================= -->
+  <section class="view-section" id="view-basic">
+    <div class="section-header-block">
+      <div style="font-size:11.5px; color:var(--accent-cyan); font-weight:800; letter-spacing:1.5px; margin-bottom:4px;">BASIC OPERATION &amp; DIAGRAM MODES</div>
+      <div style="font-size:20px; font-weight:800; color:#fff;">基本操作・各スライダーの役割一覧</div>
+    </div>
+
+    <div class="basic-grid">
+      <div class="basic-card">
+        <div class="basic-card-num">SECTION 01</div>
+        <div class="basic-card-title">4つの図解モードと特性</div>
+        <div class="basic-item-list">
+          <div class="basic-item">
+            <strong>・リング・サイクル（2〜12分割）</strong>
+            手順やPDCA、構成比を表す円環図です。内径を0にすると円グラフ、数値を上げるとドーナツ型になり、エッジ矢印で循環の流れを表現できます。
+          </div>
+          <div class="basic-item">
+            <strong>・レイヤー（2〜6層）</strong>
+            中心のコア概念から外側へ段階的に広がる同心円図です。理念の浸透やターゲット層の整理に適しています。
+          </div>
+          <div class="basic-item">
+            <strong>・サテライト（2〜12分割）</strong>
+            中心テーマ（CORE）から周囲へ複数の要素を放射状に展開する関連図です。中心円・子円のサイズや接続線の太さを調整できます。
+          </div>
+          <div class="basic-item">
+            <strong>・レーダー（3〜12軸）</strong>
+            複数項目のバランスや評価軸を表す多角形チャートです。三角形から十二角形まで軸数を自在に変更でき、文字位置の距離も調整できます。
+          </div>
+        </div>
+      </div>
+
+      <div class="basic-card">
+        <div class="basic-card-num">SECTION 02</div>
+        <div class="basic-card-title">形状スライダーと基本テキスト</div>
+        <div class="basic-item-list">
+          <div class="basic-item">
+            <strong>・デザイン確認用背景設定（ホワイト／ブラック）</strong>
+            作業中のプレビュー背景を白／黒で切り替えます。どちらを選んでいても、保存される画像（PNG等）の背景は常に「透明」になります。
+          </div>
+          <div class="basic-item">
+            <strong>・パーツ間隔 ／ リング隙間</strong>
+            隣り合うセグメントや階層の間の余白（隙間）をピクセル単位で美しく整えます。
+          </div>
+          <div class="basic-item">
+            <strong>・回転角度（-180°〜+180°）</strong>
+            図解全体を回転させ、先頭項目や頂点の位置を配置したい角度へ正確に合わせられます。
+          </div>
+          <div class="basic-item">
+            <strong>・7種のフォント＆文字色切替</strong>
+            標準ゴシック、UDゴシック、丸ゴシック、明朝体など7種のフォントと、白文字／ダーク文字を一括で切り替えられます。
+          </div>
+        </div>
+      </div>
+
+      <div class="basic-card">
+        <div class="basic-card-num">SECTION 03 &amp; 04</div>
+        <div class="basic-card-title">カラー生成とテキスト入力の工夫</div>
+        <div class="basic-item-list">
+          <div class="basic-item">
+            <strong>・カスタム基準色からのパレット自動生成</strong>
+            5種の厳選プリセットに加え、「カスタム基準色」から好きな1色を選ぶだけで、調和する6色のグラデーションパレットを自動生成します。
+          </div>
+          <div class="basic-item">
+            <strong>・番号アイコンクリックでの個別色変更</strong>
+            テキスト入力欄の左にある「色付き番号アイコン（1, 2, 3... または C）」をクリックすると、そのパーツだけ個別の色へ自由に変更できます。
+          </div>
+          <div class="basic-item">
+            <strong>・スラッシュ「/」による美しい複数行改行</strong>
+            ラベル入力欄に「/（半角スラッシュ）」を入れると、その位置で自動的に改行されます（例：「01 / 計画 / Plan」で3段組の中央揃えになります）。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       VIEW 3: カスタマイズ＆オフライン保存センター
+       ========================================================= -->
+  <section class="view-section" id="view-custom">
+
+    <!-- 1. オフライン保存・ソースコード取得 -->
+    <div class="custom-box">
+      <div class="custom-box-title">
+        <span class="badge-emerald">STEP 01</span>
+        <span>オフライン用HTMLファイルの保存・コード取得</span>
+      </div>
+      <p class="custom-box-lead">
+        『Arc Diagram Generator Pro』は外部ライブラリに依存しない単一HTMLファイルで構築されています。以下のボタンから最新版ファイルをPCに保存しておくと、インターネット接続のない環境でもそのままブラウザで動作します。また、AIでカスタマイズする際のベースコードとしてもお使いいただけます。
+      </p>
+      <div class="action-btn-row">
+        <button class="btn-action-emerald" id="btn-dl-html" onclick="downloadProHtmlFile()">PRO版 HTMLファイルを保存（.html）</button>
+        <button class="btn-action-outline" id="btn-copy-html" onclick="copyProHtmlCode()">PRO版の全ソースコードをコピー</button>
+      </div>
+    </div>
+
+    <!-- 2. AIカスタマイズ指示プロンプト -->
+    <div class="custom-box">
+      <div class="custom-box-title">
+        <span class="badge-emerald">STEP 02</span>
+        <span>AI（ChatGPT / Gemini / Claude等）を使った自分専用カスタマイズ</span>
+      </div>
+      <p class="custom-box-lead">
+        普段お使いのAIに以下の指示プロンプトとPRO版のHTMLコードを渡すだけで、自社のコーポレートカラーを初期パレットに登録したり、よく使う業務フレームワークを初期ラベルに設定した「自分専用エディション」を簡単に生成できます。
+      </p>
+      <div class="action-btn-row" style="margin-bottom:10px;">
+        <button class="btn-action-emerald" id="btn-copy-prompt" onclick="copyAiPrompt()">AIカスタマイズ用プロンプトをコピー</button>
+      </div>
+      <div class="code-Area-wrap">
+        <pre class="prompt-pre" id="ai-prompt-text">以下のHTMLコードは、単一ファイルで動作する図解作成ツール「Arc Diagram Generator Pro」です。
+既存のレイアウト構造、SVG描画ロジック、およびエクスポート機能（クリップボードコピー・SVG・PDF・PNG・JSON保存）を一切損なうことなく、以下の【希望する変更内容】のみを反映した完全なHTMLコードを出力してください。
+
+【希望する変更内容】
+1. 初期カラーパレット（defaultPalettes配列の先頭、または新規追加）に以下の配色を追加してください：
+   ・パレット名：My Brand Palette
+   ・カラーコード（6色）：#1e3a8a, #1d4ed8, #2563eb, #3b82f6, #60a5fa, #93c5fd
+2. 起動時の初期モード（state.mode）を「ring」にし、初期分割数（state.count）を「4」にしてください。
+3. 起動時の初期テキストラベル（state.labels配列の先頭4つ）を以下に変更してください：
+   ・1つ目：01 / 現状分析 / Analysis
+   ・2つ目：02 / 戦略策定 / Strategy
+   ・3つ目：03 / 施策実行 / Execution
+   ・4つ目：04 / 効果検証 / Review
+
+【出力ルール】
+・省略（「// 既存のコードと同じ」など）は一切行わず、最初から最後までそのまま保存してブラウザで動く完全なHTMLコードとして出力してください。
+
+--- ここから対象HTMLコード ---
+（※ここに「PRO版の全ソースコードをコピー」した内容を貼り付けてAIへ送信してください）</pre>
+      </div>
+    </div>
+
+    <!-- 3. 直接コードを書き換える場合のリファレンス -->
+    <div class="custom-box">
+      <div class="custom-box-title">
+        <span class="badge-emerald">STEP 03</span>
+        <span>テキストエディタ（メモ帳・VS Code等）で直接書き換える場合のガイド</span>
+      </div>
+      <p class="custom-box-lead">
+        AIを使わずに、ご自身でHTMLファイルをメモ帳やコードエディタで開いて初期設定を書き換える場合は、`&lt;script&gt;` タグ直下にある以下の変数（`defaultPalettes` および `state`）の値を変更して上書き保存するだけで即座に反映されます。
+      </p>
+      <table class="ref-table">
+        <thead>
+          <tr>
+            <th>変更したい項目</th>
+            <th>コード内の変数名</th>
+            <th>書き換え方法・具体例</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>配色パレットの追加・変更</strong></td>
+            <td><span class="code-inline">const defaultPalettes</span></td>
+            <td>
+              配列内の <span class="code-inline">{ name: 'パレット名', colors: ['#色1', '#色2', '#色3', '#色4', '#色5', '#色6'] }</span> を書き換えるか、新しい行を追加します。6色の16進数カラーコードを指定してください。
+            </td>
+          </tr>
+          <tr>
+            <td><strong>起動時の図解モード</strong></td>
+            <td><span class="code-inline">state.mode</span></td>
+            <td>
+              <span class="code-inline">'ring'</span>（リング）、<span class="code-inline">'layer'</span>（レイヤー）、<span class="code-inline">'satellite'</span>（サテライト）、<span class="code-inline">'polygon'</span>（レーダー）のいずれかを指定します。
+            </td>
+          </tr>
+          <tr>
+            <td><strong>起動時の初期ラベル文字</strong></td>
+            <td><span class="code-inline">state.labels</span></td>
+            <td>
+              配列内の文字列（<span class="code-inline">'01 / 計画/Plan'</span> など）を普段よく使う項目名に書き換えます。改行したい位置には <span class="code-inline">/</span> を入れておきます。
+            </td>
+          </tr>
+          <tr>
+            <td><strong>起動時の初期数値（Weights）</strong></td>
+            <td><span class="code-inline">state.values</span></td>
+            <td>
+              数値反映モードを最初からONにしたい場合は、<span class="code-inline">state.useWeights: true</span> に変更し、<span class="code-inline">values: [40, 25, 20, 15, ...]</span> の数値を変更します。
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </section>
+
+</div>
+
+<script>
+  /* PRO機能ガイド全6ページのデータ定義（全ページ viewBox="0 0 920 250" に完全統一） */
+  const proSlides = [
+    {
+      num: 'PRO FEATURE 01 / 06',
+      sub: 'PowerPoint・Canvaそれぞれの仕様に最適化',
+      title: 'ベクター形式での保存（SVG / PDF）',
+      svg: `
+        <svg viewBox="0 0 920 250" xmlns="http://www.w3.org/2000/svg">
+          <rect width="920" height="250" fill="#090e1a"/>
+          <!-- Left Box: SVG for PowerPoint -->
+          <g transform="translate(30, 20)">
+            <rect width="415" height="210" rx="10" fill="#131c2e" stroke="#00d2ff" stroke-width="1.5"/>
+            <rect x="20" y="14" width="105" height="22" rx="4" fill="#00d2ff"/>
+            <text x="72" y="25" text-anchor="middle" dominant-baseline="central" fill="#000" font-size="11.5" font-weight="900">SVGを保存</text>
+            <text x="136" y="25" dominant-baseline="central" fill="#fff" font-size="14" font-weight="800">PowerPointでの「図形パーツ分解」</text>
+            <!-- Flow inside Left -->
+            <rect x="20" y="48" width="175" height="98" rx="6" fill="#0b111e" stroke="#23314d"/>
+            <text x="107" y="70" text-anchor="middle" fill="#00d2ff" font-size="11.5" font-weight="700">1. スライドへ挿入して</text>
+            <text x="107" y="92" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="800">右クリック ＞「図形に変換」</text>
+            <text x="107" y="114" text-anchor="middle" fill="#8b9bb4" font-size="10.5">（または Ctrl + Shift + G）</text>
+            <path d="M 203 97 L 222 97 M 216 92 L 222 97 L 216 102" stroke="#00d2ff" stroke-width="2.5" fill="none"/>
+            <rect x="230" y="48" width="165" height="98" rx="6" fill="#0b111e" stroke="#00d2ff" stroke-dasharray="4 3"/>
+            <path d="M 275 110 A 25 25 0 0 1 300 85 L 300 110 Z" fill="#0284c7"/>
+            <path d="M 308 79 A 25 25 0 0 1 333 104 L 308 104 Z" fill="#00d2ff" stroke="#fbbf24" stroke-width="2"/>
+            <text x="312" y="132" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">個別図形として自由編集</text>
+            <text x="20" y="168" fill="#e2e8f0" font-size="12">円弧や文字が1つずつのOffice標準図形に分解され、</text>
+            <text x="20" y="188" fill="#00d2ff" font-size="12" font-weight="700">特定パーツだけの色変更や個別アニメーション設定が可能です。</text>
+          </g>
+          <!-- Right Box: PDF for Canva -->
+          <g transform="translate(475, 20)">
+            <rect width="415" height="210" rx="10" fill="#131c2e" stroke="#fbbf24" stroke-width="1.5"/>
+            <rect x="20" y="14" width="105" height="22" rx="4" fill="#fbbf24"/>
+            <text x="72" y="25" text-anchor="middle" dominant-baseline="central" fill="#000" font-size="11.5" font-weight="900">PDFを保存</text>
+            <text x="136" y="25" dominant-baseline="central" fill="#fff" font-size="14" font-weight="800">Canvaでの「テキスト分離・編集」</text>
+            <!-- Flow inside Right -->
+            <rect x="20" y="48" width="175" height="98" rx="6" fill="#0b111e" stroke="#23314d"/>
+            <text x="107" y="70" text-anchor="middle" fill="#fbbf24" font-size="11.5" font-weight="700">1. PDFを保存して</text>
+            <text x="107" y="92" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="800">Canvaへドラッグ＆ドロップ</text>
+            <text x="107" y="114" text-anchor="middle" fill="#8b9bb4" font-size="10.5">（アップロードして配置）</text>
+            <path d="M 203 97 L 222 97 M 216 92 L 222 97 L 216 102" stroke="#fbbf24" stroke-width="2.5" fill="none"/>
+            <rect x="230" y="48" width="165" height="98" rx="6" fill="#0b111e" stroke="#fbbf24" stroke-dasharray="4 3"/>
+            <circle cx="312" cy="90" r="23" fill="#0f766e"/>
+            <rect x="272" y="79" width="80" height="22" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="3 2"/>
+            <text x="312" y="90" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="10.5" font-weight="700">文字を打ち替え</text>
+            <text x="312" y="132" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="700">テキストボックスが自動分離</text>
+            <text x="20" y="168" fill="#e2e8f0" font-size="12">Canva上で図解内の文字が独立したテキスト要素として認識され、</text>
+            <text x="20" y="188" fill="#fbbf24" font-size="12" font-weight="700">Canvaのフォントへの変更や文字の打ち替え・位置調整が行えます。</text>
+          </g>
+        </svg>
+      `,
+      cards: [
+        {
+          title: 'PowerPointで使う場合（SVGを保存）',
+          text: '右上の<span>「SVGを保存」</span>で出力したファイルをPowerPointに挿入し、<span>右クリック ＞「図形に変換」</span>（またはグループ解除）を実行すると、すべての円弧と文字が個別の図形パーツに分かれます。'
+        },
+        {
+          title: 'Canvaで文字を編集したい場合（PDFを保存）',
+          text: 'CanvaにSVGを入れると1枚の素材として扱われますが、<span>「PDFを保存」</span>で出力したファイルをCanvaへアップロードすると、<span>テキスト部分が独立したテキストボックスとして分離</span>され、Canva上で文字編集が可能になります。',
+          amber: true
+        }
+      ]
+    },
+    {
+      num: 'PRO FEATURE 02 / 06',
+      sub: 'ファイル保存の手間をゼロにする高速連携',
+      title: 'クリップボードに1クリック直接コピー',
+      svg: `
+        <svg viewBox="0 0 920 250" xmlns="http://www.w3.org/2000/svg">
+          <rect width="920" height="250" fill="#090e1a"/>
+          <g transform="translate(60, 40)">
+            <rect width="230" height="170" rx="10" fill="#131c2e" stroke="#23314d" stroke-width="2"/>
+            <text x="115" y="40" text-anchor="middle" fill="#8b9bb4" font-size="12" font-weight="700">STEP 1：ツール画面右上</text>
+            <rect x="35" y="65" width="160" height="44" rx="6" fill="#0072ff"/>
+            <text x="115" y="87" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="13.5" font-weight="800">クリップボードにコピー</text>
+            <text x="115" y="138" text-anchor="middle" fill="#00d2ff" font-size="12" font-weight="700">1200×1200px 透過画像を格納</text>
+          </g>
+          <path d="M 315 125 L 365 125 M 355 117 L 365 125 L 355 133" stroke="#fbbf24" stroke-width="3" fill="none"/>
+          <g transform="translate(390, 40)">
+            <rect width="210" height="170" rx="10" fill="#131c2e" stroke="#00d2ff" stroke-width="2"/>
+            <text x="105" y="40" text-anchor="middle" fill="#8b9bb4" font-size="12" font-weight="700">STEP 2：スライド画面上で</text>
+            <rect x="45" y="62" width="120" height="50" rx="8" fill="#0b111e" stroke="#00d2ff" stroke-width="2"/>
+            <text x="105" y="87" text-anchor="middle" dominant-baseline="central" fill="#00d2ff" font-size="18" font-weight="900">Ctrl + V</text>
+            <text x="105" y="138" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">（Macは Cmd + V で貼り付け）</text>
+          </g>
+          <path d="M 625 125 L 665 125 M 655 117 L 665 125 L 655 133" stroke="#34d399" stroke-width="3" fill="none"/>
+          <g transform="translate(685, 40)">
+            <rect width="185" height="170" rx="10" fill="#131c2e" stroke="#34d399" stroke-width="2"/>
+            <text x="92" y="40" text-anchor="middle" fill="#34d399" font-size="12" font-weight="800">Canvaでの応用</text>
+            <text x="92" y="82" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">上部「メニュー」から</text>
+            <text x="92" y="106" text-anchor="middle" fill="#fbbf24" font-size="13.5" font-weight="800">パレット（色調補正）</text>
+            <text x="92" y="138" text-anchor="middle" fill="#8b9bb4" font-size="11.5">スライドに合わせた色味変更</text>
+          </g>
+        </svg>
+      `,
+      cards: [
+        {
+          title: 'ダウンロードフォルダを汚さず即座に配置',
+          text: 'PC内に画像ファイルを保存するステップを省略し、<span>ボタン1つでクリップボードへ高解像度の背景透過画像を格納</span>します。PowerPointやCanva、Googleスライド上でそのまま貼り付け（Ctrl+V）が可能です。'
+        },
+        {
+          title: 'Canva上での色調調整との組み合わせ',
+          text: 'Canvaに貼り付けた後、上部の<span>「メニュー」内のカラーパレット調整機能</span>を使うことで、配置した図解の色味や明るさをスライド全体のトーンに合わせて微調整することもできます。',
+          amber: true
+        }
+      ]
+    },
+    {
+      num: 'PRO FEATURE 03 / 06',
+      sub: 'データの重みや評価スコアを視覚化する',
+      title: '全4モード対応・数値反映モード（Weights）',
+      svg: `
+        <svg viewBox="0 0 920 250" xmlns="http://www.w3.org/2000/svg">
+          <rect width="920" height="250" fill="#090e1a"/>
+          <g transform="translate(30, 25)">
+            <rect width="200" height="200" rx="10" fill="#131c2e" stroke="#23314d"/>
+            <text x="100" y="30" text-anchor="middle" fill="#00d2ff" font-size="13" font-weight="800">1. リング：角度比率</text>
+            <circle cx="100" cy="105" r="45" fill="none" stroke="#1e3a8a" stroke-width="22"/>
+            <circle cx="100" cy="105" r="45" fill="none" stroke="#00d2ff" stroke-width="22" stroke-dasharray="150 200" transform="rotate(-90 100 105)"/>
+            <text x="100" y="180" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="700">数値に応じて円弧の角度が変化</text>
+          </g>
+          <g transform="translate(250, 25)">
+            <rect width="200" height="200" rx="10" fill="#131c2e" stroke="#23314d"/>
+            <text x="100" y="30" text-anchor="middle" fill="#00d2ff" font-size="13" font-weight="800">2. レイヤー：帯の厚み</text>
+            <circle cx="100" cy="105" r="55" fill="#14b8a6"/>
+            <circle cx="100" cy="105" r="32" fill="#0d9488"/>
+            <circle cx="100" cy="105" r="18" fill="#0f766e"/>
+            <text x="100" y="180" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="700">各階層のリング厚みが連動変化</text>
+          </g>
+          <g transform="translate(470, 25)">
+            <rect width="200" height="200" rx="10" fill="#131c2e" stroke="#23314d"/>
+            <text x="100" y="30" text-anchor="middle" fill="#00d2ff" font-size="13" font-weight="800">3. サテライト：子円サイズ</text>
+            <circle cx="100" cy="105" r="22" fill="#be123c"/>
+            <circle cx="52" cy="75" r="18" fill="#f43f5e"/>
+            <circle cx="148" cy="75" r="10" fill="#fb7185"/>
+            <circle cx="100" cy="150" r="14" fill="#e11d48"/>
+            <text x="100" y="180" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="700">重要度に応じて子円の大きさが変化</text>
+          </g>
+          <g transform="translate(690, 25)">
+            <rect width="200" height="200" rx="10" fill="#131c2e" stroke="#23314d"/>
+            <text x="100" y="30" text-anchor="middle" fill="#00d2ff" font-size="13" font-weight="800">4. レーダー：評価頂点</text>
+            <polygon points="100,55 145,90 128,145 72,145 55,90" fill="none" stroke="#3b82f6" stroke-dasharray="3 3"/>
+            <polygon points="100,62 138,94 112,130 78,140 72,98" fill="rgba(0,210,255,0.25)" stroke="#00d2ff" stroke-width="2"/>
+            <text x="100" y="180" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="700">1〜100のスコアでチャートを描画</text>
+          </g>
+        </svg>
+      `,
+      cards: [
+        {
+          title: '「均等配置」と「数値反映」のワンタッチ切替',
+          text: '左サイドバー「04」セクション上部の切替バーで<span>「数値反映」</span>を選ぶと、各ラベルの右側に数値入力欄（1〜100）が現れます。「均等配置」に戻せばいつでも等分表示へ復帰します。'
+        },
+        {
+          title: '4つのモードそれぞれで連動する視覚表現',
+          text: '入力した数値は、リングでは<span>「構成角度の比率」</span>、レイヤーでは<span>「各階層の帯の厚み」</span>、サテライトでは<span>「子円の半径サイズ」</span>、レーダーでは<span>「評価チャートの頂点位置」</span>としてリアルタイムに反映されます。',
+          amber: true
+        }
+      ]
+    },
+    {
+      num: 'PRO FEATURE 04 / 06',
+      sub: 'メモ帳やAIの出力テキストから一瞬で図解を構築',
+      title: '箇条書き一括入力（分割数の自動同期）',
+      svg: `
+        <svg viewBox="0 0 920 250" xmlns="http://www.w3.org/2000/svg">
+          <rect width="920" height="250" fill="#090e1a"/>
+          <g transform="translate(50, 30)">
+            <rect width="340" height="190" rx="10" fill="#131c2e" stroke="#23314d" stroke-width="2"/>
+            <text x="24" y="34" fill="#00d2ff" font-size="13" font-weight="800">1行に1項目ずつ貼り付け（最大12行）</text>
+            <rect x="24" y="48" width="292" height="120" rx="6" fill="#0b111e" stroke="#23314d"/>
+            <text x="38" y="72" fill="#e2e8f0" font-size="12.5" font-family="monospace">01 / 課題の抽出 / Issue</text>
+            <text x="38" y="94" fill="#e2e8f0" font-size="12.5" font-family="monospace">02 / 仮説の構築 / Hypothesis</text>
+            <text x="38" y="116" fill="#e2e8f0" font-size="12.5" font-family="monospace">03 / 施策の実行 / Action</text>
+            <text x="38" y="138" fill="#e2e8f0" font-size="12.5" font-family="monospace">04 / 効果の検証 / Verify</text>
+            <text x="38" y="158" fill="#fbbf24" font-size="12.5" font-family="monospace">05 / 標準化・展開 / Scale</text>
+          </g>
+          <path d="M 415 125 L 485 125 M 475 117 L 485 125 L 475 133" stroke="#fbbf24" stroke-width="3" fill="none"/>
+          <text x="450" y="105" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="800">［一括反映］</text>
+          <g transform="translate(510, 30)">
+            <rect width="360" height="190" rx="10" fill="#131c2e" stroke="#00d2ff" stroke-width="2"/>
+            <text x="180" y="55" text-anchor="middle" fill="#fff" font-size="16" font-weight="800">行数に合わせて「分割数」も自動同期</text>
+            <rect x="40" y="78" width="280" height="44" rx="6" fill="#0b111e" stroke="#23314d"/>
+            <text x="180" y="100" text-anchor="middle" dominant-baseline="central" fill="#00d2ff" font-size="14" font-weight="800">5行貼り付け → 自動で「5分割」へ変更</text>
+            <text x="180" y="152" text-anchor="middle" fill="#8b9bb4" font-size="12.5">1つずつ入力欄をクリックして打ち直す手間が省けます</text>
+          </g>
+        </svg>
+      `,
+      cards: [
+        {
+          title: '分割数の調整とラベル入力を1アクションで完了',
+          text: '「04」セクション内の<span>「箇条書き一括入力」</span>を開き、複数行のテキストを貼り付けて「一括反映」を押すと、<span>貼り付けた行数（2〜12行）に合わせて分割数スライダーが自動同期</span>され、全ラベルへの流し込みが一度に完了します。'
+        },
+        {
+          title: 'スラッシュ「/」改行との組み合わせ',
+          text: '一括入力する各行の中に<span>「01 / 計画 / Plan」のようにスラッシュを含めておく</span>ことで、複数段に綺麗に改行された図解が一瞬で出来上がります。',
+          amber: true
+        }
+      ]
+    },
+    {
+      num: 'PRO FEATURE 05 / 06',
+      sub: '図解の求心力を高めるタイポグラフィ制御',
+      title: '中心テキストの専用設定＆リング中央タイトル配置',
+      svg: `
+        <svg viewBox="0 0 920 250" xmlns="http://www.w3.org/2000/svg">
+          <rect width="920" height="250" fill="#090e1a"/>
+          <g transform="translate(60, 25)">
+            <rect width="360" height="200" rx="10" fill="#131c2e" stroke="#23314d"/>
+            <circle cx="110" cy="100" r="64" fill="none" stroke="#0284c7" stroke-width="24" stroke-dasharray="92 8"/>
+            <text x="110" y="92" text-anchor="middle" fill="#1e293b" font-size="11" font-weight="800">CORE</text>
+            <rect x="68" y="78" width="84" height="44" rx="4" fill="rgba(251,191,36,0.15)" stroke="#fbbf24" stroke-dasharray="3 2"/>
+            <text x="110" y="100" text-anchor="middle" dominant-baseline="central" fill="#fbbf24" font-size="13" font-weight="900">中央タイトル</text>
+            <text x="265" y="75" text-anchor="middle" fill="#fff" font-size="14" font-weight="800">リングの中央空間に</text>
+            <text x="265" y="98" text-anchor="middle" fill="#00d2ff" font-size="14" font-weight="800">全体テーマを配置可能</text>
+            <text x="265" y="128" text-anchor="middle" fill="#8b9bb4" font-size="11.5">（内径サイズ40以上の時に表示）</text>
+          </g>
+          <g transform="translate(460, 25)">
+            <rect width="400" height="200" rx="10" fill="#131c2e" stroke="#00d2ff" stroke-width="1.5"/>
+            <text x="30" y="42" fill="#00d2ff" font-size="14" font-weight="800">外周パーツとは独立した「中心専用コントロール」</text>
+            <rect x="30" y="62" width="340" height="52" rx="6" fill="#0b111e" stroke="#23314d"/>
+            <text x="46" y="88" dominant-baseline="central" fill="#e2e8f0" font-size="12.5">・中心文字色： <tspan fill="#fff" font-weight="800">［白文字］</tspan> ／ <tspan fill="#fbbf24" font-weight="800">［黒文字］</tspan> を個別選択</text>
+            <rect x="30" y="126" width="340" height="52" rx="6" fill="#0b111e" stroke="#23314d"/>
+            <text x="46" y="152" dominant-baseline="central" fill="#e2e8f0" font-size="12.5">・中心サイズ： <tspan fill="#00d2ff" font-weight="800">12px 〜 44px</tspan> まで大きく強調可能</text>
+          </g>
+        </svg>
+      `,
+      cards: [
+        {
+          title: '外周は白文字、中心は黒文字といった柔軟な配色',
+          text: 'リングの中央空間（白背景）にタイトルを入れる際、<span>外周の濃い色パーツは「白文字」のまま、中央のタイトルだけを「黒文字」にしてサイズを大きくする</span>といった独立したデザイン調整が可能です。'
+        },
+        {
+          title: 'レイヤーの中心コアサイズ調整にも対応',
+          text: 'PRO版では、レイヤーモードにおける<span>「中心コアサイズ（40〜120）」のスライダー調整</span>にも対応しており、中心の文字量に合わせてコア円の大きさを自在に広げられます。',
+          amber: true
+        }
+      ]
+    },
+    {
+      num: 'PRO FEATURE 06 / 06',
+      sub: '作成した図解をテンプレート資産として保管',
+      title: '設定ファイルの保存・読込（JSONプリセット機能）',
+      svg: `
+        <svg viewBox="0 0 920 250" xmlns="http://www.w3.org/2000/svg">
+          <rect width="920" height="250" fill="#090e1a"/>
+          <g transform="translate(70, 35)">
+            <rect width="240" height="180" rx="10" fill="#131c2e" stroke="#23314d" stroke-width="2"/>
+            <text x="120" y="45" text-anchor="middle" fill="#00d2ff" font-size="13" font-weight="800">［設定を保存］をクリック</text>
+            <rect x="65" y="68" width="110" height="56" rx="8" fill="#0b111e" stroke="#00d2ff" stroke-width="2"/>
+            <text x="120" y="96" text-anchor="middle" dominant-baseline="central" fill="#00d2ff" font-size="17" font-weight="900">.JSON</text>
+            <text x="120" y="150" text-anchor="middle" fill="#8b9bb4" font-size="11.5">配色・数値・ラベルを丸ごと保存</text>
+          </g>
+          <path d="M 340 105 L 420 105 M 410 97 L 420 105 L 410 113" stroke="#fbbf24" stroke-width="2.5" fill="none"/>
+          <path d="M 420 145 L 340 145 M 350 137 L 340 145 L 350 153" stroke="#00d2ff" stroke-width="2.5" fill="none"/>
+          <g transform="translate(450, 35)">
+            <rect width="400" height="180" rx="10" fill="#131c2e" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="30" y="45" fill="#fbbf24" font-size="15" font-weight="800">［設定を読込］でいつでも完全再現</text>
+            <text x="30" y="82" fill="#e2e8f0" font-size="13">・定例会議や月次レポートで使う図解のフォーマット化</text>
+            <text x="30" y="112" fill="#e2e8f0" font-size="13">・後から数値や一部の文字だけを直して再出力</text>
+            <text x="30" y="142" fill="#34d399" font-size="13" font-weight="700">・チームメンバー間での図解設定ファイルの共有にも最適</text>
+          </g>
+        </svg>
+      `,
+      cards: [
+        {
+          title: '図解のすべての状態（State）を軽量ファイルに保管',
+          text: '左サイドバー最下部「05」の<span>「設定を保存」</span>を押すと、選択中のモード、スライダー数値、カスタム配色、個別色、入力ラベル、数値比率のすべてが<span>「.json」ファイルとしてPCに保存</span>されます。'
+        },
+        {
+          title: '定例資料のアップデートが数秒で完了',
+          text: '来月の資料で数値や文字の一部だけを更新したい時も、<span>「設定を読込」</span>からJSONファイルを選ぶだけで前回の状態がそのまま復元され、すぐに再編集・再出力が行えます。',
+          amber: true
+        }
+      ]
+    }
+  ];
+
+  let currentSlideIdx = 0;
+
+  function initPortal() {
+    renderDots();
+    renderSlide();
+
+    document.addEventListener('keydown', function(e) {
+      const proActive = document.getElementById('view-pro').classList.contains('active');
+      if (!proActive) return;
+      if (e.key === 'ArrowRight') changeSlide(1);
+      if (e.key === 'ArrowLeft') changeSlide(-1);
+    });
+  }
+
+  function switchView(viewName) {
+    document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+    document.getElementById('view-' + viewName).classList.add('active');
+
+    const tabPro = document.getElementById('tab-pro');
+    const tabBasic = document.getElementById('tab-basic');
+    const tabCustom = document.getElementById('tab-custom');
+
+    tabPro.className = 'nav-tab' + (viewName === 'pro' ? ' active-pro' : '');
+    tabBasic.className = 'nav-tab' + (viewName === 'basic' ? ' active-basic' : '');
+    tabCustom.className = 'nav-tab' + (viewName === 'custom' ? ' active-custom' : '');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderDots() {
+    const wrap = document.getElementById('pager-dots');
+    wrap.innerHTML = proSlides.map((_, idx) => {
+      const activeClass = idx === currentSlideIdx ? ' active' : '';
+      return `<button class="step-dot${activeClass}" onclick="goToSlide(${idx})">0${idx + 1}</button>`;
+    }).join('');
+  }
+
+  function renderSlide() {
+    const s = proSlides[currentSlideIdx];
+    const container = document.getElementById('slide-content');
+
+    const cardsHtml = s.cards.map(c => `
+      <div class="desc-card ${c.amber ? 'amber' : ''}">
+        <div class="desc-card-title">${c.title}</div>
+        <div class="desc-card-text">${c.text}</div>
+      </div>
+    `).join('');
+
+    container.innerHTML = `
+      <div class="slide-header">
+        <div class="slide-badge-row">
+          <span class="slide-num-badge">${s.num}</span>
+          <span class="slide-sub-tag">${s.sub}</span>
+        </div>
+        <div class="slide-title">${s.title}</div>
+      </div>
+      <div class="slide-visual-box">${s.svg}</div>
+      <div class="slide-desc-grid">${cardsHtml}</div>
+    `;
+
+    document.getElementById('page-counter').textContent = `0${currentSlideIdx + 1} / 0${proSlides.length}`;
+    document.getElementById('btn-prev').disabled = (currentSlideIdx === 0);
+    document.getElementById('btn-next').disabled = (currentSlideIdx === proSlides.length - 1);
+    renderDots();
+  }
+
+  function changeSlide(delta) {
+    const next = currentSlideIdx + delta;
+    if (next < 0 || next >= proSlides.length) return;
+    currentSlideIdx = next;
+    renderSlide();
+  }
+
+  function goToSlide(idx) {
+    currentSlideIdx = idx;
+    renderSlide();
+  }
+
+  /* AIプロンプトの1クリックコピー */
+  async function copyAiPrompt() {
+    const btn = document.getElementById('btn-copy-prompt');
+    const text = document.getElementById('ai-prompt-text').textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+      const orig = btn.textContent;
+      btn.textContent = 'プロンプトをコピーしました！';
+      setTimeout(() => { btn.textContent = orig; }, 2000);
+    } catch (e) {
+      alert('コピーに失敗しました。テキストを選択してコピーしてください。');
+    }
+  }
+
+  /* PRO版HTMLファイルの取得 */
+  async function fetchProHtmlSource() {
+    const candidates = ['index.html', 'Arc-Diagram-Generator-PRO.html'];
+    for (const file of candidates) {
+      try {
+        const res = await fetch(file, { cache: 'no-store' });
+        if (res.ok) {
+          const text = await res.text();
+          if (text.includes('Arc Diagram Generator Pro')) {
+            return text;
+          }
+        }
+      } catch (e) {}
+    }
+    return null;
+  }
+
+  async function downloadProHtmlFile() {
+    const btn = document.getElementById('btn-dl-html');
+    const source = await fetchProHtmlSource();
+    if (!source) {
+      alert('ツール画面を開き、ブラウザ上で「名前を付けてページを保存（Ctrl+S）」を実行してHTMLファイルを保存してください。');
+      return;
+    }
+    const blob = new Blob([source], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Arc-Diagram-Generator-PRO.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    const orig = btn.textContent;
+    btn.textContent = 'ダウンロード完了！';
+    setTimeout(() => { btn.textContent = orig; }, 2000);
+  }
+
+  async function copyProHtmlCode() {
+    const btn = document.getElementById('btn-copy-html');
+    const source = await fetchProHtmlSource();
+    if (!source) {
+      alert('ローカル環境制限のため自動取得できませんでした。ツール画面を右クリック＞「ページのソースを表示」からコピーしてください。（GitHub Pages上では1クリックで動作します）');
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(source);
+      const orig = btn.textContent;
+      btn.textContent = '全ソースコードをコピーしました！';
+      setTimeout(() => { btn.textContent = orig; }, 2000);
+    } catch (e) {
+      alert('コピーに失敗しました。');
+    }
+  }
+
+  initPortal();
+</script>
+</body>
+</html>
